@@ -1,0 +1,6 @@
+# Outputs
+pacman
+build/
+
+# Visual Studio Code
+.vscode/
