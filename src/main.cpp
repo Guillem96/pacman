@@ -7,7 +7,7 @@ int main(int argc, char const *argv[])
 {
     srand(time(NULL));
 
-    Map* map = new Map(8, 8);
+    Map* map = new Map(41, 21);
     map->init();
     map->render();
     map->destroy();

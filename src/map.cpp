@@ -113,24 +113,24 @@ void Map::init()
     {
         for (int j = 0; j < m_width; j ++)
         {
-            if (i == 0 || j == 0 || i == m_height - 1 || j == m_width - 1)
-                m_map[i * m_width + j] = new Cell(CellType::Wall);
-            else
-                m_map[i * m_width + j] = new Cell(CellType::Path);
+            m_map[i * m_width + j] = new Cell(CellType::Wall);
             m_map[i * m_width + j]->init();
         }
     }
-    auto edges = killHunt(m_width - 1, m_height - 1);
+    auto edges = killHunt((int)(m_width / 2), (int) (m_height / 2));
 
     for (int i = 0; i < edges.size(); i++) 
     {
         auto p = edges.at(i);
         auto dir = p.second - p.first;
+        (*this)(p.first.getX() * 2 + 1, p.first.getY() * 2 + 1)->setType(CellType::Path);
+        (*this)(p.second.getX() * 2 + 1, p.second.getY() * 2 + 1)->setType(CellType::Path);
+        if (dir.getX() != 0)
+            (*this)(p.first.getX() * 2 + 2, p.first.getY() * 2 + 1)->setType(CellType::Path);
 
-        if (dir == Vector2(1, 0) || dir == Vector2(-1, 0))
-        {
-            (*this)(p.second.getX() + 1, p.second.getY())->setType(CellType::Path);
-        }
+        if (dir.getY() != 0)
+            (*this)(p.first.getX() * 2 + 1, p.first.getY() * 2 + 2)->setType(CellType::Path);
+
         std::cout << '(' << p.first.getX() << ',' << p.first.getY() << ") -> (" << p.second.getX() << ',' << p.second.getY() << ')' << std::endl;
     }
 }
