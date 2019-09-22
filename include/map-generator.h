@@ -2,81 +2,66 @@
 
 #include <vector>
 #include <iostream>
+#include <stack>
 #include "cell.h"
 #include "util.h"
 
-class MapGenerator;
-
-class Builder
-{
-private:
-    int m_moved = 0;
-
-    int m_minDist;
-    int m_maxDist;
-    int m_distance;
-    
-    bool m_dead = false;
-
-    MapGenerator* m_generator;
-
-    Vector2 m_direction;
-    Vector2 m_initialPos;
-    Vector2 m_prevDirection;
-    Vector2 m_position;
-
-    void m_generateMinMaxDist();
-    void m_changeDirection();
-    bool m_isPath(const Vector2& pos);
-    Vector2 m_closerDirection(bool horizontal);
-
-    Cell** maze();
-    int height();
-    int width();
-    
-public:
-    Builder(const Vector2& spawn,
-            int minDist,
-            int maxDist,
-            const Vector2& initialDir, 
-            MapGenerator* generator);
-
-    bool step();
-    bool isDead() const;
+enum Action {
+    RIGHT,
+    LEFT,
+    UP,
+    DOWN,
+    NONE
 };
 
+class Successor {
+    public:
+        Vector2 state;
+        Action action;
 
-class MapGenerator
+    Successor(Vector2 s, Action a): state(s), action(a) {}
+} ;
+
+class Node
+{
+    private:
+        Node* m_parent;
+        Vector2 m_state;
+        Action m_action;
+
+    public:
+        Node(Vector2 state, Node* parent, Action action);
+
+        Vector2 getState() const;
+        const Node* getParent() const;
+        const Action getAction() const;
+
+};
+
+class DFS
 {
 private:
     Cell** m_maze;
-    std::vector<Builder*> m_builders;
-    std::vector<Vector2> m_directions = {
-        Vector2(1, 0),
-        Vector2(-1, 0),
-        Vector2(0, 1),
-        Vector2(0, -1)
-    };
-    std::vector<Vector2> m_spawners;
+    std::stack<Node> m_fringe;
 
     int m_width;
     int m_height;
 
-    
+    void m_drawEdges(std::vector<std::pair<Vector2, Vector2>>);
     bool m_end();
-    std::vector<Vector2> m_validDirections(const Vector2& pos);
+    std::vector<Action> m_validDirections(const Vector2& pos);
+    std::vector<Successor> m_getChildren(const Node& n);
 
 public:
-    MapGenerator(int nSpawners, 
-                int nBuildersSpawn, 
-                int m_mazeWidth,
-                int m_mazeHeight);
+    DFS(int height, int width);
 
     Cell** generate();
     int getHeight();
     int getWidth();
     Cell** getMaze();
-    void visit(const Vector2& pos);
-    const std::vector<Vector2>& getSpawners();
+
+    void visit(const Node& n);
+    Vector2 getStartState() const;
+    void m_visitThroug(const Node& n);
 };
 

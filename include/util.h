@@ -18,7 +18,7 @@ public:
     bool operator==(Vector2 other);
     bool operator!=(Vector2 other);
     Vector2 operator+(Vector2 other) const;
-    Vector2 operator-(Vector2 other);
+    Vector2 operator-(Vector2 other) const;
     static Vector2 getRandom(int maxX, int maxY);
 
     int getX() const;

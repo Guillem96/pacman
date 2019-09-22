@@ -37,9 +37,9 @@ Vector2 Vector2::operator+(Vector2 other) const
     return Vector2(m_x + other.m_x, other.m_y + m_y);
 }
 
-Vector2 Vector2::operator-(Vector2 other)
+Vector2 Vector2::operator-(Vector2 other) const
 {
-    return Vector2(m_x - other.m_x, other.m_y - m_y);
+    return Vector2(m_x - other.m_x, m_y - other.m_y);
 }
 
 int Vector2::getX() const

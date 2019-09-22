@@ -12,6 +12,8 @@ private:
 
     Cell** m_map;
 
+    void m_drawHome();
+    
 public:
     Map(int width, int height);
     Map();
