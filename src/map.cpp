@@ -1,10 +1,9 @@
 #include "map.h"
 #include "util.h"
-#include <bits/stdc++.h> 
-#include <vector>
 #include "map-generator.h"
 
-typedef std::pair<Vector2, Vector2> edge_t;
+#include <vector>
+#include <GL/glut.h>
 
 Map::Map(int width, int height): m_width(width), m_height(height)
 {
@@ -20,24 +19,32 @@ Map::~Map()
 
 void Map::init()
 {
-    this->m_map = new Cell*[m_height * m_width + 1];
-    // for (int i = 0; i < m_height * m_width; i++)
-    // {   
-    //     m_map[i] = new Cell(CellType::Path);
-    //     m_map[i]->init();
-    // }
+    m_generateMap();
+
+    /* Append gfx data */
+    std::pair<float, float> cellSize = std::pair<float, float>(
+                                glutGet(GLUT_WINDOW_HEIGHT) / (float) m_height, 
+                                glutGet(GLUT_WINDOW_WIDTH) / (float) m_width);
     for (int i = 0; i < m_height; i++)
     {
         for (int j = 0; j < m_width; j++)
         {
-            if (i == 0 || j == 0 || i == m_height - 1 || j == m_width - 1)
-            {
-                m_map[m_width * i + j] = new Cell(CellType::Wall);
-            } else m_map[m_width * i + j] = new Cell(CellType::Path);
-            m_map[m_width * i + j]->init();
+            (*this)(i, j)->setPosition(Vector2(i, j));
+            (*this)(i, j)->setCellSize(cellSize);
+            (*this)(i, j)->setMapReference(this);
         }
     }
+}  
 
+void Map::m_generateMap()
+{
+    this->m_map = new Cell*[m_height * m_width + 1];
+    for (int i = 0; i < m_height * m_width; i++)
+    {   
+        m_map[i] = new Cell(CellType::Wall);
+        m_map[i]->init();
+    }
+    
     int h = odd(m_height);
     int w = even(m_width / 2 + 1);
 
@@ -53,7 +60,7 @@ void Map::init()
     for (int i = 0; i < m_height; i++)
         for (int j = 0; j < m_width / 2; j++)
             m_map[m_width * i + (m_width - j - 1)] = new Cell((*this)(i, j)->getType());
-}  
+}
 
 void Map::m_drawHome()
 {
@@ -78,15 +85,21 @@ void Map::m_drawHome()
             m_map[m_width * (cx + i) + j + cy - 1 - 2 * (m_width % 2 == 0)]->setType(CellType::Path);
 }
 
-void Map::render() const
+void Map::textRender() const
 {
     for (int i = 0; i < m_height * m_width; i++)
     {
-        m_map[i]->render();
+        m_map[i]->textRender();
         if ((i + 1) % m_width == 0)
             std::cout << std::endl;
     }
 };
+
+void Map::render() const
+{
+    for (int i = 0; i < m_height * m_width; i++)
+        m_map[i]->render();
+}
 
 void Map::destroy()
 {
@@ -95,3 +108,6 @@ void Map::destroy()
         
     delete m_map;
 }
+
+int Map::getHeight() const { return m_height; }
+int Map::getWidth() const { return m_width; }

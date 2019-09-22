@@ -9,11 +9,11 @@ class Map: public GameObject
 private:
     int m_width;
     int m_height;
-
     Cell** m_map;
 
     void m_drawHome();
-    
+    void m_generateMap();
+
 public:
     Map(int width, int height);
     Map();
@@ -21,7 +21,11 @@ public:
 
     void init() override;
     void render() const override;
+    void textRender() const;
     void destroy() override;
+
+    int getHeight() const;
+    int getWidth() const;
 
     Cell* operator()(int i, int j) const 
     {
