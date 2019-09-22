@@ -21,5 +21,6 @@ public:
     void render() const override;
     void destroy() override;
 
+    const CellType& getType();
     void setType(CellType type);
 };

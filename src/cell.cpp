@@ -22,6 +22,11 @@ void Cell::render() const
         std::cout << ' ';
 }
 
+const CellType& Cell::getType()
+{
+    return m_type;
+}
+
 void Cell::setType(CellType type)
 {
     m_type = type;
