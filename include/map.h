@@ -13,6 +13,7 @@ private:
 
     void m_drawHome();
     void m_generateMap();
+    void m_clearDeadEnds();
 
 public:
     Map(int width, int height);

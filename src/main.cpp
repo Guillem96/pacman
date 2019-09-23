@@ -8,7 +8,7 @@
 #define WINDOW_WIDTH  800
 
 #define MAP_HEIGHT 19
-#define MAP_WIDTH  31
+#define MAP_WIDTH  32
 
 int main(int argc, char const *argv[])
 {
