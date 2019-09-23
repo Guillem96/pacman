@@ -41,29 +41,28 @@ static std::vector<Cell*> validDeleteWalls(int i, int j, Map* map)
     std::vector<Cell*> res;
 
     int nWalls = 0;
-            std::cout << "Here0" << std::endl;
+
     if (i > 0 && (*map)(i - 1, j)->getType() == CellType::Wall)
     {
 	nWalls++;
 	if ((i - 1) != 0)
 	    res.push_back((*map)(i - 1, j));
     }
-        std::cout << "Here1" << std::endl;
+
     if (i < map->getHeight() - 1 && (*map)(i + 1, j)->getType() == CellType::Wall)
     {
 	nWalls++;
 	if ((i + 1) != map->getHeight() - 1)
 	    res.push_back((*map)(i + 1, j));
     }
-        std::cout << "Here2" << std::endl;
+
     if (j > 0 && (*map)(i, j - 1)->getType() == CellType::Wall)
     {
 	nWalls++;
 	if ((j - 1) != 0)
 	    res.push_back((*map)(i, j - 1));
     }
-        std::cout << "Here3" << std::endl;
-    std::cout << j << std::endl;
+
     if (j < map->getWidth() - 1 && (*map)(i, j + 1)->getType() == CellType::Wall)
     {
 	nWalls++;
@@ -71,9 +70,9 @@ static std::vector<Cell*> validDeleteWalls(int i, int j, Map* map)
 	    res.push_back((*map)(i, j + 1));
     }
 
-    if (nWalls < 3)
-    	res.clear();
-    return res;
+  if (nWalls < 3)
+	res.clear();
+return res;
 
 }
 
@@ -88,10 +87,9 @@ void Map::m_clearDeadEnds()
 		auto wallsToBreak = validDeleteWalls(i, j, this);
 		if (wallsToBreak.size() != 0) 
 		{
-		    int rndIdx = randomRange(0, wallsToBreak.size());
-		         
+		    int rndIdx = randomRange(0, wallsToBreak.size() - 1);
 		    wallsToBreak[rndIdx]->setType(CellType::Path);
-std::cout << "Here4" << std::endl;
+
 		}
 	    }	
 	}
@@ -118,12 +116,14 @@ void Map::m_generateMap()
             m_map[m_width * i + j] = mm[w * i + j];
     
     m_drawHome();
-    m_clearDeadEnds();
     
     /* Make the maze symmetric */
     for (int i = 0; i < m_height; i++)
         for (int j = 0; j < m_width / 2; j++)
             m_map[m_width * i + (m_width - j - 1)] = new Cell((*this)(i, j)->getType());
+    
+
+    m_clearDeadEnds();
 }
 
 void Map::m_drawHome()
