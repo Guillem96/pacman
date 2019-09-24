@@ -19,15 +19,18 @@ private:
 
     /* Gfx valiables */
     std::pair<float, float> m_gfxCellSize;
+    
 public:
     Cell(CellType type);
     ~Cell();
 
     void init() override;
     void render() const override;
-    void textRender() const;
     void destroy() override;
 
+    /* Renders the cell in text mode */
+    void textRender() const;
+    
     const Vector2& getPosition();
     void setPosition(Vector2 pos);
 
@@ -36,5 +39,9 @@ public:
 
     void setCellSize(std::pair<float, float> size);
 
+    /* Is the cell a wall? */
+    bool isWall();
+    
+    /* Set a reference to the currently instanciated map */
     void setMapReference(const Map* map);
 };

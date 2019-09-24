@@ -11,9 +11,10 @@ private:
     int m_height;
     Cell** m_map;
 
-    void m_drawHome();
-    void m_generateMap();
-    void m_clearDeadEnds();
+    void m_drawHome();      //> Draws phantoms house at the center of tha maze
+    void m_generateMap();   //> Generates the whole map using DFS
+    void m_clearDeadEnds(); //> Clears paths with a single exit
+    void m_makeSymetric();  //> Mirrors the map on the y axis
 
 public:
     Map(int width, int height);
@@ -28,8 +29,5 @@ public:
     int getHeight() const;
     int getWidth() const;
 
-    Cell* operator()(int i, int j) const 
-    {
-        return m_map[m_width * i + j];
-    }
+    Cell* operator()(int i, int j) const;
 };

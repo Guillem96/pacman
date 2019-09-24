@@ -42,12 +42,10 @@ class DFS
 {
 private:
     Cell** m_maze;
-    std::stack<Node> m_fringe;
 
     int m_width;
     int m_height;
 
-    void m_drawEdges(std::vector<std::pair<Vector2, Vector2>>);
     bool m_end();
     std::vector<Action> m_validDirections(const Vector2& pos);
     std::vector<Successor> m_getChildren(const Node& n);
@@ -59,6 +57,8 @@ public:
     int getHeight();
     int getWidth();
     Cell** getMaze();
+
+    void destroy();
 
     void visit(const Node& n);
     Vector2 getStartState() const;

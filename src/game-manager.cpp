@@ -31,12 +31,15 @@ void GameManager::init()
     /* Initialize maze */
     m_map = new Map(m_mapWidth, m_mapHeight);
     m_map->init();
-
+    
     /* Run */
     g_gameManager = this;
-    glutMainLoop();
 }
 
+void GameManager::run()
+{
+    glutMainLoop();
+}
 
 void GameManager::drawCallBack()
 {

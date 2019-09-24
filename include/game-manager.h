@@ -5,15 +5,15 @@
 class GameManager
 {
 private:
-    int m_height;
-    int m_width;
+    int m_height;       //> OpenGL window height
+    int m_width;        //> OpenGL window width
 
-    int m_mapHeight;
-    int m_mapWidth;
+    int m_mapHeight;    //> Pacman maze height
+    int m_mapWidth;     //> Pacman maze width
 
-    Map* m_map;
+    Map* m_map;         //> Map reference
     
-    static void drawCallBack();
+    static void drawCallBack(); //> OpenGL render callback
 
 public:
     GameManager(int windowHeight, 
@@ -22,6 +22,7 @@ public:
                 int mapWidth);
 
     void init();
+    void run();
     void render();
     void destroy();
 };

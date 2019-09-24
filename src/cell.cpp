@@ -61,7 +61,8 @@ void Cell::setCellSize(std::pair<float, float> size) { m_gfxCellSize = size; }
 
 void Cell::setMapReference(const Map* map) { m_map = map; }
 
-
+bool Cell::isWall() { return m_type == CellType::Wall; }
+    
 void Cell::destroy()
 {
     

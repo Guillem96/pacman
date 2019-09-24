@@ -63,13 +63,14 @@ std::vector<Successor> DFS::m_getChildren(const Node& n)
 
 DFS::DFS(int height, int width): m_width(width), m_height(height)
 {
-
+    /* Initialize only the odd cells to wall */
     m_maze = new Cell*[m_width * m_height];
     for (int i = 0; i < m_height; i++)
     {
         for (int j = 0; j < m_width; j++)
         {
-            m_maze[m_width * i + j] = new Cell((i * j) % 2 == 1 ? CellType::Path : CellType::Wall);
+            auto cellType = (i * j) % 2 == 1 ? CellType::Path : CellType::Wall;
+            m_maze[m_width * i + j] = new Cell(cellType);
             m_maze[m_width * i + j]->init();
         }
     }
@@ -95,21 +96,22 @@ static bool all(bool* a, int n)
 
 Cell** DFS::generate()
 {
-    std::vector<edge_t> edges;
     bool* visited = new bool[m_width * m_height];
+    std::stack<Node> fringe;
+
     for (int i = 0; i < m_height; i++)
         for (int j = 0; j < m_width; j++)
             visited[m_width * i + j] = m_maze[m_width * i + j]->getType() == CellType::Wall;
 
     auto seed = std::chrono::system_clock::now().time_since_epoch().count();
-    m_fringe.push(Node(getStartState(), nullptr, Action::NONE));
+    fringe.push(Node(getStartState(), nullptr, Action::NONE));
 
     while (true)
     {
-        if (m_fringe.empty())
-            break;
+        if (fringe.empty())
+            break; /* Done */
 
-        Node n = m_fringe.top(); m_fringe.pop();
+        Node n = fringe.top(); fringe.pop();
         visited[m_width * n.getState().getX() + n.getState().getY()] = true;
 
         auto s = m_getChildren(n);
@@ -118,36 +120,24 @@ Cell** DFS::generate()
         for (int i = 0; i < s.size(); i++)
         {
             auto ns = Node(s[i].state, &n, s[i].action);
-           if (m_maze[m_width * s[i].state.getX() + s[i].state.getY()]->getType() == CellType::Path &&
+           if (!m_maze[m_width * s[i].state.getX() + s[i].state.getY()]->isWall() &&
                 !visited[m_width * ns.getState().getX() + ns.getState().getY()])
             {
-                edges.push_back(edge_t(n.getState(), ns.getState()));
+                /* Clear the wall that is between the two points */
+                Vector2 dir = getActionVector(s[i].action);
+                dir = Vector2(dir.getX() / 2, dir.getY() / 2);
+                auto toClear = ns.getState() - dir;
+                m_maze[m_width * toClear.getX() + toClear.getY()]->setType(CellType::Path);
+
+                /* Mark the node as visited so we do not generate again their children */
                 visited[m_width * ns.getState().getX() + ns.getState().getY()] = true;
-                m_fringe.push(ns);
+                fringe.push(ns);
             }
         }
     }
-    m_drawEdges(edges);
+    
+    delete visited;
     return m_maze;
-}
-
-void DFS::m_drawEdges(std::vector<edge_t> edges)
-{
-    for (int i = 0; i < edges.size(); i++)
-    {
-        auto dst = edges[i].second;
-        auto src = edges[i].first;
-        auto dir = dst - src;
-        
-        if (dir.getX() < 0)
-            m_maze[m_width * (dst.getX() + 1) + dst.getY()]->setType(CellType::Path);
-        else if (dir.getX() > 0)
-            m_maze[m_width * (src.getX() + 1) + src.getY()]->setType(CellType::Path);
-        else if (dir.getY() < 0)
-            m_maze[m_width * dst.getX() + dst.getY() + 1]->setType(CellType::Path);
-        else if (dir.getY() > 0)
-            m_maze[m_width * src.getX() + src.getY() + 1]->setType(CellType::Path);
-    }
 }
 
 void DFS::visit(const Node& n)
@@ -162,6 +152,13 @@ void DFS::visit(const Node& n)
     dir = Vector2(dir.getX() / - 2, dir.getY() / -2);
     pos = pos + dir;
     m_maze[m_width * pos.getX() + pos.getY()]->setType(CellType::Path);
+}
+
+void DFS::destroy()
+{
+    for (int i = 0; i < m_height * m_width; i++)
+        delete m_maze[i];
+    delete m_maze;
 }
 
 int DFS::getHeight() { return m_height; }
