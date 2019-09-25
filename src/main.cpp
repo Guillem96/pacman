@@ -7,8 +7,8 @@
 #define WINDOW_HEIGHT 600
 #define WINDOW_WIDTH  800
 
-#define MAP_HEIGHT 21
-#define MAP_WIDTH  31
+#define MAP_HEIGHT 19
+#define MAP_WIDTH  34
 
 int main(int argc, char const *argv[])
 {
@@ -20,7 +20,7 @@ int main(int argc, char const *argv[])
     gm->init();
     gm->run();
     gm->destroy();
-    
+
     delete gm;
     
     return 0;

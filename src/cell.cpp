@@ -22,22 +22,21 @@ void Cell::render() const
     if (m_type == CellType::Path)
         return;
 
-    Vector2 normPos = Vector2(m_pos.getY(), m_map->getHeight() -1 - m_pos.getX());
+    Vector2 normPos = Vector2(m_pos.getY(), 
+                                m_map->getHeight() -1 - m_pos.getX());
     auto x = normPos.getX();
     auto y = normPos.getY();
 
     auto w = m_gfxCellSize.second;
     auto h = m_gfxCellSize.first;
-    
-    glColor3f(0,0,0.8);
+
+    glColor3f(45 / (float)255, 85 / (float)255, 94 / (float)255);
     
     glBegin(GL_QUADS);
 
     glVertex2i(x * w, y * h);
     glVertex2i((x + 1) * w, y * h); 
-
     glVertex2i((x + 1) * w, (y + 1) * h); 
-
     glVertex2i(x * w, (y + 1) * h); 
 
     glEnd();

@@ -138,7 +138,7 @@ void Map::m_generateMap()
 
 void Map::m_drawHome()
 {
-    int homeWidth = 3 + (m_width % 2 == 0);
+    int homeWidth = 3;
     int homeHeight = 4;
 
     int cx = m_height / 2 - 2; /* Home entrance point */

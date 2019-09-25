@@ -18,7 +18,7 @@ void GameManager::init()
     /* Init opengl stuff */
     int argc = 0;
     glutInit(&argc, NULL);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(50, 50);
     glutInitWindowSize(m_width, m_height);
     glutCreateWindow("Pacman");
@@ -26,13 +26,12 @@ void GameManager::init()
     glutDisplayFunc(drawCallBack);
 
     glMatrixMode(GL_PROJECTION);
-    gluOrtho2D(0,m_width - 1, 0, m_height - 1);
+    gluOrtho2D(0, m_width - 1, 0, m_height - 1);
 
     /* Initialize maze */
     m_map = new Map(m_mapWidth, m_mapHeight);
     m_map->init();
     
-    /* Run */
     g_gameManager = this;
 }
 
@@ -48,8 +47,9 @@ void GameManager::drawCallBack()
 
 void GameManager::render() 
 {
-    glClearColor(0.0, 0.0, 0.0 ,0.0);
-    glClear(GL_COLOR_BUFFER_BIT);
+    
+    glClearColor(0.13, 0.13, 0.13, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);    
     
     m_map->render();
     m_map->textRender();
