@@ -147,7 +147,7 @@ void DFS::visit(const Node& n)
     /* Clear the wall that is between the two points */
     Vector2 dir = getActionVector(a);
     dir = Vector2(dir.getX() / 2, dir.getY() / 2);
-    auto toClear = ns.getState() - dir;
+    auto toClear = n.getState() - dir;
     m_maze[m_width * toClear.getX() + toClear.getY()]->setType(CellType::Path);
 }
 

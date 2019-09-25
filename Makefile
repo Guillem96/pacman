@@ -13,16 +13,18 @@ DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 _OBJ = main.o cell.o map.o util.o map-generator.o game-manager.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
-directories: 
-	@mkdir -p build
+.PHONY: clean all
+
+all: directories $(TARGET)
 
 $(ODIR)/%.o: $(SOURCES)/%.cpp $(DEPS)
 	g++ -c -o $@ $< -Iinclude
 
-$(TARGET): directories $(OBJ)
-	g++ -o $@ $^ $(LIBS) 
+directories: 
+	@mkdir -p build
 
-.PHONY: clean
+$(TARGET): $(OBJ)
+	g++ -o $@ $^ $(LIBS) 
 
 clean:
 	@rm -f $(TARGET)
