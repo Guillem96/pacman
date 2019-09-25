@@ -30,10 +30,10 @@ public:
     }
 };
 
-void shuffle(int*, int);
-int min(int, int);
-int sign(int);
-int* range(int start, int end, int step);
-int randomRange(int low, int high);
-int even(int val);
-int odd(int val);
+void shuffle(int*, int);                    //> Shuffle an integer array inplace
+int min(int, int);                          //> Return the min value between two integers
+int sign(int);                              //> Returns -1 if the number is less than 0, otherwise returns 1
+int* range(int start, int end, int step);   //> range-python like function
+int randomRange(int low, int high);         //> Generates a random value inside the [low, high] range
+int even(int val);                          //> Converts an integer to even
+int odd(int val);                           //> Converts an integer to odd
