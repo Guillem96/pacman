@@ -98,12 +98,11 @@ Cell** DFS::generate()
 {
     bool* visited = new bool[m_width * m_height];
     std::stack<Node> fringe;
-
-    for (int i = 0; i < m_height; i++)
-        for (int j = 0; j < m_width; j++)
-            visited[m_width * i + j] = m_maze[m_width * i + j]->getType() == CellType::Wall;
-
     auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+    for (int i = 0; i < m_height * m_width; i++)
+        visited[i] = m_maze[i]->isWall();
+
     fringe.push(Node(getStartState(), nullptr, Action::NONE));
 
     while (true)
@@ -123,12 +122,9 @@ Cell** DFS::generate()
            if (!m_maze[m_width * s[i].state.getX() + s[i].state.getY()]->isWall() &&
                 !visited[m_width * ns.getState().getX() + ns.getState().getY()])
             {
-                /* Clear the wall that is between the two points */
-                Vector2 dir = getActionVector(s[i].action);
-                dir = Vector2(dir.getX() / 2, dir.getY() / 2);
-                auto toClear = ns.getState() - dir;
-                m_maze[m_width * toClear.getX() + toClear.getY()]->setType(CellType::Path);
-
+                /* Visit the new node */
+                visit(ns);
+               
                 /* Mark the node as visited so we do not generate again their children */
                 visited[m_width * ns.getState().getX() + ns.getState().getY()] = true;
                 fringe.push(ns);
@@ -147,11 +143,12 @@ void DFS::visit(const Node& n)
 
     if (a == Action::NONE)
         return;
-
-    auto dir = getActionVector(a);
-    dir = Vector2(dir.getX() / - 2, dir.getY() / -2);
-    pos = pos + dir;
-    m_maze[m_width * pos.getX() + pos.getY()]->setType(CellType::Path);
+    
+    /* Clear the wall that is between the two points */
+    Vector2 dir = getActionVector(a);
+    dir = Vector2(dir.getX() / 2, dir.getY() / 2);
+    auto toClear = ns.getState() - dir;
+    m_maze[m_width * toClear.getX() + toClear.getY()]->setType(CellType::Path);
 }
 
 void DFS::destroy()
