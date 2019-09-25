@@ -28,3 +28,6 @@ $(TARGET): $(OBJ)
 
 clean:
 	@rm -f $(TARGET)
+
+dist:
+	zip guillem-orellana-pacman.zip src/* include/* Makefile

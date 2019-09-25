@@ -12,6 +12,12 @@
 
 int main(int argc, char const *argv[])
 {
+    if (MAP_HEIGHT < 10 || MAP_WIDTH < 10)
+    {
+        std::cout << "Window width and height must be larger than 10." << std::endl;
+        return -1;
+    }
+
     srand(time(NULL));
 
     GameManager* gm = new GameManager(WINDOW_HEIGHT, 

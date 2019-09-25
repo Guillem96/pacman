@@ -112,7 +112,7 @@ void Map::m_generateMap()
     for (int i = 0; i < m_height * m_width; i++)
         m_map[i] = new Cell(CellType::Wall);
 
-    int h = m_height;
+    int h = m_height - (m_height % 2 == 0);
     int w = even(m_width / 2 + 1);
 
     DFS mgen = DFS(h, w);

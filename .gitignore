@@ -4,3 +4,6 @@ build/
 
 # Visual Studio Code
 .vscode/
+
+# Dist files
+*.zip
