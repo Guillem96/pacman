@@ -29,5 +29,7 @@ public:
     int getHeight() const;
     int getWidth() const;
 
+    std::pair<float, float> getGfxCellSize() const;
+
     Cell* operator()(int i, int j) const;
 };

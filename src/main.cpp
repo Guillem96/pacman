@@ -23,6 +23,7 @@ int main(int argc, char const *argv[])
     GameManager* gm = new GameManager(WINDOW_HEIGHT, 
                                       WINDOW_WIDTH, 
                                       MAP_HEIGHT, MAP_WIDTH);
+
     gm->init();
     gm->run();
     gm->destroy();

@@ -16,9 +16,6 @@ private:
     Vector2 m_pos;
     CellType m_type;
     const Map* m_map;
-
-    /* Gfx valiables */
-    std::pair<float, float> m_gfxCellSize;
     
 public:
     Cell(CellType type);
@@ -36,8 +33,6 @@ public:
 
     const CellType& getType();
     void setType(CellType type);
-
-    void setCellSize(std::pair<float, float> size);
 
     /* Is the cell a wall? */
     bool isWall();

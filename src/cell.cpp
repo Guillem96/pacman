@@ -27,8 +27,9 @@ void Cell::render() const
     auto x = normPos.getX();
     auto y = normPos.getY();
 
-    auto w = m_gfxCellSize.second;
-    auto h = m_gfxCellSize.first;
+    auto cellSize = m_map->getGfxCellSize();
+    auto w = cellSize.second;
+    auto h = cellSize.first;
 
     glColor3f(45 / (float)255, 85 / (float)255, 94 / (float)255);
     
@@ -55,8 +56,6 @@ void Cell::setType(CellType type) { m_type = type; }
 
 const Vector2& Cell::getPosition() { return m_pos; }
 void Cell::setPosition(Vector2 pos) { m_pos = pos; }
-
-void Cell::setCellSize(std::pair<float, float> size) { m_gfxCellSize = size; }
 
 void Cell::setMapReference(const Map* map) { m_map = map; }
 

@@ -22,17 +22,11 @@ void Map::init()
     /* Generate a random maze */
     m_generateMap();
 
-    /* Append gfx data */
-    std::pair<float, float> cellSize = std::pair<float, float>(
-        glutGet(GLUT_WINDOW_HEIGHT) / (float)m_height,
-        glutGet(GLUT_WINDOW_WIDTH) / (float)m_width);
-
     for (int i = 0; i < m_height; i++)
     {
         for (int j = 0; j < m_width; j++)
         {
             (*this)(i, j)->setPosition(Vector2(i, j));
-            (*this)(i, j)->setCellSize(cellSize);
             (*this)(i, j)->setMapReference(this);
         }
     }
@@ -212,6 +206,13 @@ void Map::destroy()
         delete m_map[i];
 
     delete m_map;
+}
+
+std::pair<float, float> Map::getGfxCellSize() const
+{
+    return std::pair<float, float>(
+        glutGet(GLUT_WINDOW_HEIGHT) / (float)m_height,
+        glutGet(GLUT_WINDOW_WIDTH) / (float)m_width);
 }
 
 int Map::getHeight() const { return m_height; }
