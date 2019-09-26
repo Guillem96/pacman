@@ -37,3 +37,5 @@ int* range(int start, int end, int step);   //> range-python like function
 int randomRange(int low, int high);         //> Generates a random value inside the [low, high] range
 int even(int val);                          //> Converts an integer to even
 int odd(int val);                           //> Converts an integer to odd
+void drawCircle(float cx, float cy, 
+                float r, int num_segments); //> Draws a circle using opengl

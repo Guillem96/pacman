@@ -13,7 +13,7 @@ private:
     const Map* m_map;
 
 public:
-    Player(const Vector2& initialPos, const Map* map);
+    Player(const Map* map);
     ~Player();
 
     void setDirection(Vector2 dir);

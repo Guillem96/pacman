@@ -7,10 +7,24 @@ ODIR	:= build
 
 LIBS	= -lglut -lGLU -lGL -lm
 
-_DEPS = game-object.h cell.h map.h util.h map-generator.h game-manager.h
+_DEPS = game-object.h \
+		cell.h \
+		map.h \
+		util.h \
+		map-generator.h \
+		game-manager.h \
+		player.h
+
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o cell.o map.o util.o map-generator.o game-manager.o
+_OBJ = main.o \
+		cell.o \
+		map.o \
+		util.o \
+		map-generator.o \
+		game-manager.o \
+		player.o
+		
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 .PHONY: clean all

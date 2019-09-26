@@ -1,5 +1,8 @@
+#include <GL/glut.h>
 #include "util.h"
+
 #include <stdlib.h>
+#include <math.h>
 
 Vector2::Vector2() : m_x(0), m_y(0)
 {
@@ -114,4 +117,16 @@ int odd(int val)
     if (val % 2 == 0)
         val--;
     return val;
+}
+
+void drawCircle(float cx, float cy, float r, int num_segments) {
+    glBegin(GL_LINE_LOOP);
+    for (int ii = 0; ii < num_segments; ii++)   
+    {
+        float theta = 2.0f * 3.1415926f * float(ii) / float(num_segments);//get the current angle 
+        float x = r * cosf(theta); //> calculate the x component 
+        float y = r * sinf(theta); //> calculate the y component 
+        glVertex2f(x + cx, y + cy); //> output vertex 
+    }
+    glEnd();
 }

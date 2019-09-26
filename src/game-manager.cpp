@@ -1,4 +1,5 @@
 #include "game-manager.h"
+#include "player.h"
 
 #include <GL/glut.h>
 
@@ -29,9 +30,12 @@ void GameManager::init()
     gluOrtho2D(0, m_width - 1, 0, m_height - 1);
 
     /* Initialize maze */
-    m_map = new Map(m_mapWidth, m_mapHeight);
-    m_map->init();
-    
+    m_gameObjects.push_back(new Map(m_mapWidth, m_mapHeight));
+    m_gameObjects.push_back(new Player((Map*)m_gameObjects[0]));
+
+    for (int i = 0; i < m_gameObjects.size(); i++)
+        m_gameObjects[i]->init();
+
     g_gameManager = this;
 }
 
@@ -40,25 +44,33 @@ void GameManager::run()
     glutMainLoop();
 }
 
-void GameManager::drawCallBack()
-{
-    g_gameManager->render();
-}
-
 void GameManager::render() 
 {
     
     glClearColor(0.13, 0.13, 0.13, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);    
     
-    m_map->render();
-    m_map->textRender();
+    for (int i = 0; i < m_gameObjects.size(); i++)
+        m_gameObjects[i]->render();
     
     glutSwapBuffers();
 }
 
-void GameManager::destroy() 
+void GameManager::update()
 {
-    m_map->destroy();
-    delete m_map;
+    for (int i = 0; i < m_gameObjects.size(); i++)
+        m_gameObjects[i]->update();
 }
+
+void GameManager::destroy() 
+{   
+    for (int i = 0; i < m_gameObjects.size(); i++)
+    {
+        m_gameObjects[i]->destroy();
+        delete m_gameObjects[i];
+    }
+    m_gameObjects.clear();
+}
+
+void GameManager::drawCallBack() { g_gameManager->render(); }
+void GameManager::idleCallback() { g_gameManager->update(); }
