@@ -4,56 +4,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-Vector2::Vector2() : m_x(0), m_y(0)
-{
-}
-
-Vector2::Vector2(int value) : m_x(value), m_y(value)
-{
-}
-
-Vector2::Vector2(int x, int y) : m_x(x), m_y(y)
-{
-}
-
-Vector2 Vector2::getRandom(int maxX, int maxY)
-{
-    return Vector2(rand() % maxX, rand() % maxY);
-}
-
-Vector2::~Vector2()
-{
-}
-
-bool Vector2::operator==(Vector2 other)
-{
-    return m_x == other.m_x && other.m_y == m_y;
-}
-
-bool Vector2::operator!=(Vector2 other)
-{
-    return !((*this) == other);
-}
-
-Vector2 Vector2::operator+(Vector2 other) const
-{
-    return Vector2(m_x + other.m_x, other.m_y + m_y);
-}
-
-Vector2 Vector2::operator-(Vector2 other) const
-{
-    return Vector2(m_x - other.m_x, m_y - other.m_y);
-}
-
-int Vector2::getX() const
-{
-    return m_x;
-}
-
-int Vector2::getY() const
-{
-    return m_y;
-}
 
 void shuffle(int *array, int n)
 {
@@ -84,15 +34,15 @@ int sign(int x)
     return 1;
 }
 
-int* range(int start, int end, int step)
+int *range(int start, int end, int step)
 {
     int size = end - start;
     size /= step;
     size += 1;
-    
-    int* res = new int[size];
+
+    int *res = new int[size];
     int it = 0;
-    for (int i = start; i < end; i+=step)
+    for (int i = start; i < end; i += step)
     {
         res[it] = i;
         it++;
@@ -119,14 +69,21 @@ int odd(int val)
     return val;
 }
 
-void drawCircle(float cx, float cy, float r, int num_segments) {
-    glBegin(GL_LINE_LOOP);
-    for (int ii = 0; ii < num_segments; ii++)   
+void drawCircle(float x, float y, float r)
+{
+    int i;
+    int triangleAmount = 20; //# of triangles used to draw circle
+
+    //GLfloat radius = 0.8f; //radius
+    GLfloat twicePi = 2.0f * 3.1415f;
+
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2f(x, y); // center of circle
+    for (i = 0; i <= triangleAmount; i++)
     {
-        float theta = 2.0f * 3.1415926f * float(ii) / float(num_segments);//get the current angle 
-        float x = r * cosf(theta); //> calculate the x component 
-        float y = r * sinf(theta); //> calculate the y component 
-        glVertex2f(x + cx, y + cy); //> output vertex 
+        glVertex2f(
+            x + (r * cos(i * twicePi / triangleAmount)),
+            y + (r * sin(i * twicePi / triangleAmount)));
     }
     glEnd();
 }

@@ -5,14 +5,14 @@
 #include <random>
 #include <chrono>
 
-typedef std::pair<Vector2, Vector2> edge_t;
+typedef std::pair<Vector2<>, Vector2<>> edge_t;
 
-Node::Node(Vector2 state, Node* parent, Action action): m_state(state), m_parent(parent), m_action(action)
+Node::Node(Vector2<> state, Node* parent, Action action): m_state(state), m_parent(parent), m_action(action)
 {
 
 }
 
-std::vector<Action> DFS::m_validDirections(const Vector2& pos)
+std::vector<Action> DFS::m_validDirections(const Vector2<>& pos)
 {
     bool canGoLeft = pos.getY() - 2 >= 0;
     bool canGoRight =  pos.getY() + 2 < m_width;
@@ -35,17 +35,17 @@ std::vector<Action> DFS::m_validDirections(const Vector2& pos)
     return valid;
 }
 
-static Vector2 getActionVector(Action a)
+static Vector2<> getActionVector(Action a)
 {
     if (a == Action::RIGHT)
-        return Vector2(0, 2);
+        return Vector2<>(0, 2);
     else if (a == Action::LEFT)
-        return  Vector2(0, -2);
+        return  Vector2<>(0, -2);
     else if (a == Action::UP)
-        return  Vector2(-2, 0);
+        return  Vector2<>(-2, 0);
     else if (a == Action::DOWN)
-        return  Vector2(2, 0);
-    return Vector2();
+        return  Vector2<>(2, 0);
+    return Vector2<>();
 }
 
 std::vector<Successor> DFS::m_getChildren(const Node& n)
@@ -54,7 +54,7 @@ std::vector<Successor> DFS::m_getChildren(const Node& n)
     std::vector<Successor> s;
     for (int i = 0; i < possibleActions.size(); i++)
     {
-        Vector2 direction = getActionVector(possibleActions[i]);
+        Vector2<> direction = getActionVector(possibleActions[i]);
         s.push_back(Successor(direction + n.getState(), possibleActions[i]));
     }
     return s;
@@ -76,14 +76,14 @@ DFS::DFS(int height, int width): m_width(width), m_height(height)
     }
 }
 
-Vector2 DFS::getStartState() const
+Vector2<> DFS::getStartState() const
 {
     int* col = range(1, m_width, 2);
     int* row = range(1, m_height, 2);
     shuffle(col, m_width / 2);
     shuffle(row, m_height / 2);
 
-    return Vector2(row[0], col[0]);
+    return Vector2<>(row[0], col[0]);
 }
 
 static bool all(bool* a, int n)
@@ -145,8 +145,8 @@ void DFS::visit(const Node& n)
         return;
     
     /* Clear the wall that is between the two points */
-    Vector2 dir = getActionVector(a);
-    dir = Vector2(dir.getX() / 2, dir.getY() / 2);
+    Vector2<> dir = getActionVector(a);
+    dir = Vector2<>(dir.getX() / 2, dir.getY() / 2);
     auto toClear = n.getState() - dir;
     m_maze[m_width * toClear.getX() + toClear.getY()]->setType(CellType::Path);
 }
@@ -162,6 +162,6 @@ int DFS::getHeight() { return m_height; }
 int DFS::getWidth() { return m_width; }
 Cell** DFS::getMaze() { return m_maze; }
 
-Vector2 Node::getState() const { return m_state; }
+Vector2<> Node::getState() const { return m_state; }
 const Node* Node::getParent() const { return m_parent; }
 const Action Node::getAction() const { return m_action; }

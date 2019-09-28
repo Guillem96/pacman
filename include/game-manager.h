@@ -12,6 +12,8 @@ private:
     int m_mapHeight;    //> Pacman maze height
     int m_mapWidth;     //> Pacman maze width
 
+    long m_lastT = 0;   //> Last time when frame was called
+
     std::vector<GameObject*> m_gameObjects; //> Reference to all instantiated gameobjects
     
     static void drawCallBack(); //> OpenGL render callback

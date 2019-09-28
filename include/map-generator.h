@@ -18,10 +18,10 @@ enum Action {
 class Successor 
 {
     public:
-        Vector2 state;
+        Vector2<> state;
         Action action;
 
-    Successor(Vector2 s, Action a): state(s), action(a) {}
+    Successor(Vector2<> s, Action a): state(s), action(a) {}
 };
 
 /* 
@@ -32,13 +32,13 @@ class Node
 {
     private:
         Node* m_parent;
-        Vector2 m_state;
+        Vector2<> m_state;
         Action m_action;
 
     public:
-        Node(Vector2 state, Node* parent, Action action);
+        Node(Vector2<> state, Node* parent, Action action);
 
-        Vector2 getState() const;
+        Vector2<> getState() const;
         const Node* getParent() const;
         const Action getAction() const;
 };
@@ -55,7 +55,7 @@ private:
     int m_height;   //> Maze or graph height
     
     /* Get the possible directions while being in the `pos` cell */
-    std::vector<Action> m_validDirections(const Vector2& pos);
+    std::vector<Action> m_validDirections(const Vector2<>& pos);
     /* Returns all the childrens of a specific node */
     std::vector<Successor> m_getChildren(const Node& n);
 
@@ -66,7 +66,7 @@ public:
     void visit(const Node& n);  //> After DFS falls in a new node
 
     
-    Vector2 getStartState() const; //> Get DFS initial state
+    Vector2<> getStartState() const; //> Get DFS initial state
     
     int getHeight();
     int getWidth();

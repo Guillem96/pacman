@@ -13,7 +13,7 @@ enum CellType {
 class Cell: public GameObject
 {
 private:
-    Vector2 m_pos;
+    Vector2<> m_pos;
     CellType m_type;
     const Map* m_map;
     
@@ -28,8 +28,8 @@ public:
     /* Renders the cell in text mode */
     void textRender() const;
     
-    const Vector2& getPosition();
-    void setPosition(Vector2 pos);
+    const Vector2<>& getPosition();
+    void setPosition(Vector2<> pos);
 
     const CellType& getType();
     void setType(CellType type);

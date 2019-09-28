@@ -22,14 +22,14 @@ void Cell::render() const
     if (m_type == CellType::Path)
         return;
 
-    Vector2 normPos = Vector2(m_pos.getY(), 
+    Vector2<> normPos = Vector2<>(m_pos.getY(), 
                                 m_map->getHeight() -1 - m_pos.getX());
     auto x = normPos.getX();
     auto y = normPos.getY();
 
     auto cellSize = m_map->getGfxCellSize();
-    auto w = cellSize.second;
-    auto h = cellSize.first;
+    auto w = cellSize.getY();
+    auto h = cellSize.getX();
 
     glColor3f(45 / (float)255, 85 / (float)255, 94 / (float)255);
     
@@ -54,8 +54,8 @@ void Cell::textRender() const
 const CellType& Cell::getType() { return m_type; }
 void Cell::setType(CellType type) { m_type = type; }
 
-const Vector2& Cell::getPosition() { return m_pos; }
-void Cell::setPosition(Vector2 pos) { m_pos = pos; }
+const Vector2<>& Cell::getPosition() { return m_pos; }
+void Cell::setPosition(Vector2<> pos) { m_pos = pos; }
 
 void Cell::setMapReference(const Map* map) { m_map = map; }
 

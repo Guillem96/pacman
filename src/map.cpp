@@ -26,7 +26,7 @@ void Map::init()
     {
         for (int j = 0; j < m_width; j++)
         {
-            (*this)(i, j)->setPosition(Vector2(i, j));
+            (*this)(i, j)->setPosition(Vector2<>(i, j));
             (*this)(i, j)->setMapReference(this);
         }
     }
@@ -208,9 +208,9 @@ void Map::destroy()
     delete m_map;
 }
 
-std::pair<float, float> Map::getGfxCellSize() const
+Vector2<float> Map::getGfxCellSize() const
 {
-    return std::pair<float, float>(
+    return Vector2<float>(
         glutGet(GLUT_WINDOW_HEIGHT) / (float)m_height,
         glutGet(GLUT_WINDOW_WIDTH) / (float)m_width);
 }
