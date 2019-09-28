@@ -2,6 +2,7 @@
 
 #include "map.h"
 #include "game-object.h"
+#include "player.h"
 
 class GameManager
 {
@@ -18,7 +19,11 @@ private:
     
     static void drawCallBack(); //> OpenGL render callback
     static void idleCallback();
+    static void keyboardCallback(unsigned char c, int x, int y);
 
+    Player* m_player;
+    Map* m_map;
+    
 public:
     GameManager(int windowHeight, 
                 int windowWidth,
@@ -27,7 +32,10 @@ public:
 
     void init();
     void run();
+
     void render();
+    void input(unsigned char c, int x, int y);
     void update();
+    
     void destroy();
 };

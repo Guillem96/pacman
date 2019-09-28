@@ -94,14 +94,15 @@ T Vector2<T>::getY() const
     return m_y;
 }
 
-void shuffle(int*, int);                    //> Shuffle an integer array inplace
-int min(int, int);                          //> Return the min value between two integers
-int sign(int);                              //> Returns -1 if the number is less than 0, otherwise returns 1
-int* range(int start, int end, int step);   //> range-python like function
-int randomRange(int low, int high);         //> Generates a random value inside the [low, high] range
-int even(int val);                          //> Converts an integer to even
-int odd(int val);                           //> Converts an integer to odd
-void drawCircle(float x, float y, float r); //> Draws a circle using opengl
+void shuffle(int*, int);                //> Shuffle an integer array inplace
+int min(int, int);                      //> Return the min value between two integers
+int min(float, float);
+int sign(int);                          //> Returns -1 if the number is less than 0, otherwise returns 1
+int* range(int, int, int);              //> range-python like function
+int randomRange(int, int);              //> Generates a random value inside the [low, high] range
+int even(int);                          //> Converts an integer to even
+int odd(int);                           //> Converts an integer to odd
+void drawCircle(float, float, float);   //> Draws a circle using opengl
 
 template <typename T = int> 
 Vector2<T> normalizeCoords(const Vector2<T>& pos, //> Normalize coordinates with respect OpenGL

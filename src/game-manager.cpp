@@ -25,13 +25,17 @@ void GameManager::init()
 
     glutDisplayFunc(drawCallBack);
     glutIdleFunc(idleCallback);
-
+    glutKeyboardFunc(keyboardCallback);
+    
     glMatrixMode(GL_PROJECTION);
     gluOrtho2D(0, m_width - 1, 0, m_height - 1);
 
     /* Initialize maze */
-    m_gameObjects.push_back(new Map(m_mapWidth, m_mapHeight));
-    m_gameObjects.push_back(new Player((Map *)m_gameObjects[0]));
+    m_map = new Map(m_mapWidth, m_mapHeight);
+    m_player = new Player(m_map);
+
+    m_gameObjects.push_back(m_map);
+    m_gameObjects.push_back(m_player);
 
     for (int i = 0; i < m_gameObjects.size(); i++)
         m_gameObjects[i]->init();
@@ -72,6 +76,32 @@ void GameManager::update()
     glutPostRedisplay();
 }
 
+void GameManager::input(unsigned char c, int x, int y)
+{
+    switch (c)
+    {
+    case 'w':
+        m_player->setDirection(Vector2<>(-1, 0));
+        break;
+    
+    case 's':
+        m_player->setDirection(Vector2<>(1, 0));
+        break;
+    
+    case 'a':
+        m_player->setDirection(Vector2<>(0, -1));
+        break;
+
+    case 'd':
+        m_player->setDirection(Vector2<>(0, 1));
+        break;
+    default:
+        break;
+    }
+
+    glutPostRedisplay();
+}
+
 void GameManager::destroy()
 {
     for (int i = 0; i < m_gameObjects.size(); i++)
@@ -84,3 +114,4 @@ void GameManager::destroy()
 
 void GameManager::drawCallBack() { g_gameManager->render(); }
 void GameManager::idleCallback() { g_gameManager->update(); }
+void GameManager::keyboardCallback(unsigned char c, int x, int y) { g_gameManager->input(c, x, y); }

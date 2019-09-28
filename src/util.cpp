@@ -27,6 +27,13 @@ int min(int a, int b)
     return b;
 }
 
+int min(float a, float b)
+{
+    if (a < b)
+        return a;
+    return b;
+}
+
 int sign(int x)
 {
     if (x < 0)

@@ -8,14 +8,16 @@ class Map;
 class Player: public GameObject
 {
 private:
+    Vector2<float> m_animDir;
+    Vector2<float> m_animPos;
+
     Vector2<> m_dir;
     Vector2<> m_pos;
+
     const Map* m_map;
 
-    float m_v;
-    Vector2<> m_posOffset;
-    float m_animDuration = .5f;
-    float m_remaining;
+    long m_animDuration = 200;
+    long m_remaining = 200;
 
     void m_initMovement();
 
