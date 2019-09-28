@@ -19,7 +19,6 @@ void Player::setDirection(Vector2<> dir)
     if (m_dir.getX() == 0 && m_dir.getY() == 0)
     {
         m_dir = dir;
-        m_animDir = Vector2<float>(dir.getX(), dir.getY());
         m_initMovement();
     }
 }
@@ -40,32 +39,55 @@ void Player::init()
 void Player::m_initMovement()
 {
     m_animPos = Vector2<float>(m_pos.getX(), m_pos.getY());
-    m_animDir = Vector2<float>(m_dir.getX() / (float)m_animDuration,
-                               m_dir.getY() / (float)m_animDuration);
+
+    m_animDir = Vector2<float>(m_dir.getX(), m_dir.getY());
+    m_animDir = m_animDir / (float)m_animDuration;
+
     m_remaining = m_animDuration;
+}
+
+static bool shouldChangeDirection(const Vector2<>& pos, const Map* map)
+{
+    std::vector<Cell*> adj = map->getAdjacent(pos);
+    int nPaths = 0;
+    for (auto cell: adj)
+        nPaths += !cell->isWall();
+    
+    return nPaths > 2;
+}
+
+static Vector2<> getRandomDirection(const Vector2<>& pos, const Map* map)
+{
+    std::vector<Cell*> adj = map->getAdjacent(pos);
+    std::vector<Vector2<>> directions;
+    
+    for (auto cell: adj)
+        if(!cell->isWall())
+            directions.push_back(cell->getPosition() - pos);
+
+    return randomChoice(directions);
 }
 
 void Player::update(long deltaTime)
 {
-    Vector2<> nextPos = m_pos + m_dir;
-    if ((*m_map)(nextPos.getX(), nextPos.getY())->isWall())
+    if ((*m_map)(m_pos + m_dir)->isWall())
     {
-        m_dir = Vector2<>();
-        m_animDir = Vector2<float>();
-        m_remaining = 0;
+        m_dir = getRandomDirection(m_pos, m_map);
+        m_initMovement();
         return;
     } 
 
-    m_animPos = Vector2<float>(m_animPos.getX() + m_animDir.getX() * min((int)deltaTime, (int) m_remaining), 
-                               m_animPos.getY() + m_animDir.getY() * min((int)deltaTime, (int) m_remaining));
-
+    Vector2<float> offset = m_animDir * min((int)deltaTime, (int) m_remaining);
+    m_animPos = m_animPos + offset;
     m_remaining -= deltaTime;
+
     if (m_remaining <= 0)
     {
         m_pos = m_pos + m_dir;
-        m_dir = Vector2<>();
-        m_animDir = Vector2<float>();
-        m_remaining = 0;
+        if (shouldChangeDirection(m_pos, m_map))
+            m_dir = getRandomDirection(m_pos, m_map);
+        
+        m_initMovement();
     }
 }
 

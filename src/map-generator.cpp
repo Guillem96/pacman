@@ -5,47 +5,33 @@
 #include <random>
 #include <chrono>
 
-typedef std::pair<Vector2<>, Vector2<>> edge_t;
 
-Node::Node(Vector2<> state, Node* parent, Action action): m_state(state), m_parent(parent), m_action(action)
+Node::Node(Vector2<> state, Node* parent, Vector2<> action): m_state(state), m_parent(parent), m_action(action)
 {
 
 }
 
-std::vector<Action> DFS::m_validDirections(const Vector2<>& pos)
+std::vector<Vector2<>> DFS::m_validDirections(const Vector2<>& pos)
 {
     bool canGoLeft = pos.getY() - 2 >= 0;
     bool canGoRight =  pos.getY() + 2 < m_width;
     bool canGoUp = pos.getX() - 2 >= 0;
     bool canGoDown = pos.getX() + 2 < m_height;
 
-    std::vector<Action> valid;
+    std::vector<Vector2<>> valid;
     if (canGoLeft)
-        valid.push_back(Action::LEFT);
+        valid.push_back(Vector2<>::left * 2);
 
     if (canGoRight)
-        valid.push_back(Action::RIGHT);
+        valid.push_back(Vector2<>::right * 2);
 
     if (canGoUp)
-        valid.push_back(Action::UP);
+        valid.push_back(Vector2<>::up * 2);
 
     if (canGoDown)
-        valid.push_back(Action::DOWN);
+        valid.push_back(Vector2<>::down * 2);
 
     return valid;
-}
-
-static Vector2<> getActionVector(Action a)
-{
-    if (a == Action::RIGHT)
-        return Vector2<>(0, 2);
-    else if (a == Action::LEFT)
-        return  Vector2<>(0, -2);
-    else if (a == Action::UP)
-        return  Vector2<>(-2, 0);
-    else if (a == Action::DOWN)
-        return  Vector2<>(2, 0);
-    return Vector2<>();
 }
 
 std::vector<Successor> DFS::m_getChildren(const Node& n)
@@ -54,7 +40,7 @@ std::vector<Successor> DFS::m_getChildren(const Node& n)
     std::vector<Successor> s;
     for (int i = 0; i < possibleActions.size(); i++)
     {
-        Vector2<> direction = getActionVector(possibleActions[i]);
+        Vector2<> direction = possibleActions[i];
         s.push_back(Successor(direction + n.getState(), possibleActions[i]));
     }
     return s;
@@ -103,7 +89,7 @@ Cell** DFS::generate()
     for (int i = 0; i < m_height * m_width; i++)
         visited[i] = m_maze[i]->isWall();
 
-    fringe.push(Node(getStartState(), nullptr, Action::NONE));
+    fringe.push(Node(getStartState(), nullptr, Vector2<>()));
 
     while (true)
     {
@@ -141,12 +127,11 @@ void DFS::visit(const Node& n)
     auto a = n.getAction();
     auto pos = n.getState();
 
-    if (a == Action::NONE)
+    if (a == Vector2<>())
         return;
     
     /* Clear the wall that is between the two points */
-    Vector2<> dir = getActionVector(a);
-    dir = Vector2<>(dir.getX() / 2, dir.getY() / 2);
+    Vector2<> dir = a / 2;
     auto toClear = n.getState() - dir;
     m_maze[m_width * toClear.getX() + toClear.getY()]->setType(CellType::Path);
 }
@@ -164,4 +149,4 @@ Cell** DFS::getMaze() { return m_maze; }
 
 Vector2<> Node::getState() const { return m_state; }
 const Node* Node::getParent() const { return m_parent; }
-const Action Node::getAction() const { return m_action; }
+const Vector2<> Node::getAction() const { return m_action; }

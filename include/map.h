@@ -30,6 +30,8 @@ public:
     int getWidth() const;
 
     Vector2<float> getGfxCellSize() const;
+    std::vector<Cell*> getAdjacent(const Vector2<>& v) const;
 
     Cell* operator()(int i, int j) const;
+    Cell* operator()(const Vector2<>& v) const;
 };

@@ -6,22 +6,15 @@
 #include "cell.h"
 #include "util.h"
 
-enum Action {
-    RIGHT,
-    LEFT,
-    UP,
-    DOWN,
-    NONE
-};
 
 /* Class which represents the possible children of the graph node */
 class Successor 
 {
     public:
         Vector2<> state;
-        Action action;
+        Vector2<> action;
 
-    Successor(Vector2<> s, Action a): state(s), action(a) {}
+    Successor(Vector2<> s, Vector2<> a): state(s), action(a) {}
 };
 
 /* 
@@ -33,14 +26,14 @@ class Node
     private:
         Node* m_parent;
         Vector2<> m_state;
-        Action m_action;
+        Vector2<> m_action;
 
     public:
-        Node(Vector2<> state, Node* parent, Action action);
+        Node(Vector2<> state, Node* parent, Vector2<> action);
 
         Vector2<> getState() const;
         const Node* getParent() const;
-        const Action getAction() const;
+        const Vector2<> getAction() const;
 };
 
 /*
@@ -55,7 +48,7 @@ private:
     int m_height;   //> Maze or graph height
     
     /* Get the possible directions while being in the `pos` cell */
-    std::vector<Action> m_validDirections(const Vector2<>& pos);
+    std::vector<Vector2<>> m_validDirections(const Vector2<>& pos);
     /* Returns all the childrens of a specific node */
     std::vector<Successor> m_getChildren(const Node& n);
 

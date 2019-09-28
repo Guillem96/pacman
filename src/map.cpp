@@ -34,38 +34,23 @@ void Map::init()
 
 static std::vector<Cell *> validDeleteWalls(int i, int j, Map *map)
 {
+    std::vector<Cell *> adjacent = map->getAdjacent(Vector2<>(i, j));
     std::vector<Cell *> res;
-
     int nWalls = 0;
 
-    if (i > 0 && (*map)(i - 1, j)->isWall())
+    for (int i = 0; i < adjacent.size(); i++)
     {
-        nWalls++;
-        if ((i - 1) != 0)
-            res.push_back((*map)(i - 1, j));
+        if (adjacent[i]->isWall())
+        {
+            nWalls++;
+            auto pos = adjacent[i]->getPosition();
+            /* Check if it is a breakable wall */
+            if (pos.getX() > 0 && pos.getX() < map->getHeight() - 1 &&
+                pos.getY() > 0 && pos.getY() < even(map->getWidth() / 2 + 1))
+                res.push_back(adjacent[i]);
+        }
     }
-
-    if (i < map->getHeight() - 1 && (*map)(i + 1, j)->isWall())
-    {
-        nWalls++;
-        if ((i + 1) != map->getHeight() - 1)
-            res.push_back((*map)(i + 1, j));
-    }
-
-    if (j > 0 && (*map)(i, j - 1)->isWall())
-    {
-        nWalls++;
-        if ((j - 1) != 0)
-            res.push_back((*map)(i, j - 1));
-    }
-
-    if (j < map->getWidth() - 1 && (*map)(i, j + 1)->isWall())
-    {
-        nWalls++;
-        if ((j + 1) != even(map->getWidth() / 2 + 1))
-            res.push_back((*map)(i, j + 1));
-    }
-
+    /* If we are sorounded by less than three walls, none of the seen walls is breakable */
     if (nWalls < 3)
         res.clear();
 
@@ -82,10 +67,7 @@ void Map::m_clearDeadEnds()
             {
                 auto wallsToBreak = validDeleteWalls(i, j, this);
                 if (wallsToBreak.size() != 0)
-                {
-                    int rndIdx = randomRange(0, wallsToBreak.size() - 1);
-                    wallsToBreak[rndIdx]->setType(CellType::Path);
-                }
+                   randomChoice(wallsToBreak)->setType(CellType::Path);
             }
         }
     }
@@ -118,6 +100,7 @@ void Map::m_generateMap()
         {
             delete m_map[m_width * i + j];
             m_map[m_width * i + j] = new Cell(mm[w * i + j]->getType());
+            m_map[m_width * i + j]->setPosition(Vector2<>(i, j));
         }
     
     /* Clear the medium map */
@@ -215,6 +198,26 @@ Vector2<float> Map::getGfxCellSize() const
         glutGet(GLUT_WINDOW_WIDTH) / (float)m_width);
 }
 
+std::vector<Cell*> Map::getAdjacent(const Vector2<>& v) const
+{
+    std::vector<Cell*> res;
+    if (v.getX() > 0)
+        res.push_back((*this)(v + Vector2<>::up));
+    
+    if (v.getX() < m_height - 1)
+        res.push_back((*this)(v + Vector2<>::down));
+    
+    if (v.getY() > 0)
+        res.push_back((*this)(v + Vector2<>::left));
+
+    if (v.getY() < m_width - 1)
+        res.push_back((*this)(v + Vector2<>::right));  
+
+    return res;
+}
+
+
 int Map::getHeight() const { return m_height; }
 int Map::getWidth() const { return m_width; }
-Cell* Map::operator()(int i, int j) const { return m_map[m_width * i + j]; }
+Cell* Map::operator()(int i, int j) const { return m_map[m_width * i + j]; }    
+Cell* Map::operator()(const Vector2<>& v) const { return m_map[m_width * v.getX() + v.getY()]; }

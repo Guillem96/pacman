@@ -15,11 +15,21 @@ public:
     Vector2(T value);
     Vector2(T x, T y);
     ~Vector2();
-        
+    
+    static const Vector2<> right;
+    static const Vector2<> left;
+    static const Vector2<> up;
+    static const Vector2<> down;
+
     bool operator==(Vector2<T> other);
     bool operator!=(Vector2<T> other);
     Vector2<T> operator+(Vector2<T> other) const;
     Vector2<T> operator-(Vector2<T> other) const;
+    Vector2<T> operator*(int scalar) const;
+    Vector2<T> operator/(int scalar) const;
+    Vector2<T> operator*(float scalar) const;
+    Vector2<T> operator/(float scalar) const;
+
     static Vector2<T> getRandom(T maxX, T mTaxY);
 
     T getX() const;
@@ -31,6 +41,17 @@ public:
     }
 };
 
+template <typename T> 
+const Vector2<> Vector2<T>::right = Vector2<>(0, 1);
+
+template <typename T> 
+const Vector2<> Vector2<T>::left = Vector2<>(0, -1);
+
+template <typename T> 
+const Vector2<> Vector2<T>::up = Vector2<>(-1, 0);
+
+template <typename T> 
+const Vector2<> Vector2<T>::down = Vector2<>(1, 0);
 
 template <typename T> 
 Vector2<T>::Vector2() : m_x(0), m_y(0)
@@ -73,14 +94,39 @@ bool Vector2<T>::operator!=(Vector2<T> other)
 template <typename T> 
 Vector2<T> Vector2<T>::operator+(Vector2<T> other) const
 {
-    return Vector2(m_x + other.m_x, other.m_y + m_y);
+    return Vector2<T>(m_x + other.m_x, other.m_y + m_y);
 }
 
 template <typename T> 
 Vector2<T> Vector2<T>::operator-(Vector2<T> other) const
 {
-    return Vector2(m_x - other.m_x, m_y - other.m_y);
+    return Vector2<T>(m_x - other.m_x, m_y - other.m_y);
 }
+
+template <typename T> 
+Vector2<T> Vector2<T>::operator*(int scalar) const
+{
+    return Vector2<T>(m_x * scalar, m_y * scalar);
+}
+
+template <typename T> 
+Vector2<T> Vector2<T>::operator/(int scalar) const
+{
+    return Vector2<T>(m_x / scalar, m_y / scalar);
+}
+
+template <typename T> 
+Vector2<T> Vector2<T>::operator*(float scalar) const
+{
+    return Vector2<T>(m_x * scalar, m_y * scalar);
+}
+
+template <typename T> 
+Vector2<T> Vector2<T>::operator/(float scalar) const
+{
+    return Vector2<T>(m_x / scalar, m_y / scalar);
+}
+
 
 template <typename T> 
 T Vector2<T>::getX() const
@@ -103,6 +149,12 @@ int randomRange(int, int);              //> Generates a random value inside the 
 int even(int);                          //> Converts an integer to even
 int odd(int);                           //> Converts an integer to odd
 void drawCircle(float, float, float);   //> Draws a circle using opengl
+
+template <typename T>
+T randomChoice(std::vector<T> v)       //> Pick a random element from a vector
+{
+    return v[randomRange(0, v.size() - 1)];
+}
 
 template <typename T = int> 
 Vector2<T> normalizeCoords(const Vector2<T>& pos, //> Normalize coordinates with respect OpenGL
