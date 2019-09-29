@@ -13,7 +13,8 @@ _DEPS = game-object.h \
 		util.h \
 		map-generator.h \
 		game-manager.h \
-		player.h
+		player.h \
+		phantom.h
 
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
@@ -23,7 +24,8 @@ _OBJ = main.o \
 		util.o \
 		map-generator.o \
 		game-manager.o \
-		player.o
+		player.o \
+		phantom.o
 		
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 

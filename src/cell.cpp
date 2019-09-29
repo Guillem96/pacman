@@ -31,7 +31,7 @@ void Cell::render() const
     auto w = cellSize.getY();
     auto h = cellSize.getX();
 
-    glColor3f(45 / (float)255, 85 / (float)255, 94 / (float)255);
+    Color::darkGreen.glColor();
     
     glBegin(GL_QUADS);
 

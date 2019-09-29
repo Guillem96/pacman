@@ -1,5 +1,6 @@
 #include "game-manager.h"
 #include "player.h"
+#include "phantom.h"
 
 #include <GL/glut.h>
 
@@ -36,6 +37,7 @@ void GameManager::init()
 
     m_gameObjects.push_back(m_map);
     m_gameObjects.push_back(m_player);
+    m_gameObjects.push_back(new Phantom(m_map));
 
     for (int i = 0; i < m_gameObjects.size(); i++)
         m_gameObjects[i]->init();

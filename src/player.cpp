@@ -4,8 +4,6 @@
 #include "map.h"
 #include "util.h"
 
-static bool shouldChangeDirection(const Vector2<>&, const Map*);
-static Vector2<> getRandomDirection(const Vector2<>&, const Map*);
 
 Player::Player(const Map *map)
     : m_map(map)
@@ -50,27 +48,6 @@ void Player::m_initMovement()
     m_remaining = m_animDuration;
 }
 
-static bool shouldChangeDirection(const Vector2<>& pos, const Map* map)
-{
-    std::vector<Cell*> adj = map->getAdjacent(pos);
-    int nPaths = 0;
-    for (auto cell: adj)
-        nPaths += !cell->isWall();
-    
-    return nPaths > 2;
-}
-
-static Vector2<> getRandomDirection(const Vector2<>& pos, const Map* map)
-{
-    std::vector<Cell*> adj = map->getAdjacent(pos);
-    std::vector<Vector2<>> directions;
-    
-    for (auto cell: adj)
-        if(!cell->isWall())
-            directions.push_back(cell->getPosition() - pos);
-
-    return randomChoice(directions);
-}
 
 void Player::update(long deltaTime)
 {
@@ -106,7 +83,8 @@ void Player::render() const
     auto w = cellSize.getY();
     auto h = cellSize.getX();
 
-    glColor3f(244 / (float)255, 182 / (float)255, 7 / (float)255);
+    Color::yellowPacman.glColor();
+
     drawCircle(w * x + w / (float)2, 
                h * y + h / (float)2, 
                w * 0.4);
