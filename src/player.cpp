@@ -4,6 +4,9 @@
 #include "map.h"
 #include "util.h"
 
+static bool shouldChangeDirection(const Vector2<>&, const Map*);
+static Vector2<> getRandomDirection(const Vector2<>&, const Map*);
+
 Player::Player(const Map *map)
     : m_map(map)
 {
