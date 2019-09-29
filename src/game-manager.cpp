@@ -50,7 +50,6 @@ void GameManager::run()
 
 void GameManager::render()
 {
-
     glClearColor(0.13, 0.13, 0.13, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -81,20 +80,21 @@ void GameManager::input(unsigned char c, int x, int y)
     switch (c)
     {
     case 'w':
-        m_player->setDirection(Vector2<>(-1, 0));
+        m_player->setDirection(Vector2<>::up);
         break;
     
     case 's':
-        m_player->setDirection(Vector2<>(1, 0));
+        m_player->setDirection(Vector2<>::down);
         break;
     
     case 'a':
-        m_player->setDirection(Vector2<>(0, -1));
+        m_player->setDirection(Vector2<>::left);
         break;
 
     case 'd':
-        m_player->setDirection(Vector2<>(0, 1));
+        m_player->setDirection(Vector2<>::right);
         break;
+
     default:
         break;
     }

@@ -5,7 +5,7 @@
 #include "util.h"
 
 Player::Player(const Map *map)
-    : m_map(map), m_dir(Vector2<>(0, 1)), m_animDir(Vector2<float>(0, 1))
+    : m_map(map)
 {
 }
 
@@ -33,6 +33,7 @@ void Player::init()
         m_pos = Vector2<>::getRandom(m_map->getHeight(),
                                      m_map->getWidth());
 
+    m_dir = getRandomDirection(m_pos, m_map);
     m_initMovement();
 }
 

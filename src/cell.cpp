@@ -23,7 +23,7 @@ void Cell::render() const
         return;
 
     Vector2<> normPos = Vector2<>(m_pos.getY(), 
-                                m_map->getHeight() -1 - m_pos.getX());
+                                  m_map->getHeight() -1 - m_pos.getX());
     auto x = normPos.getX();
     auto y = normPos.getY();
 
