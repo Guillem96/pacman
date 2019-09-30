@@ -77,7 +77,8 @@ void Map::m_makeSymetric()
 {
     for (int i = 0; i < m_height; i++)
         for (int j = 0; j < m_width / 2 + 1; j++)
-            m_map[m_width * i + (m_width - j - 1)] = new Cell((*this)(i, j)->getType());
+            m_map[m_width * i + (m_width - j - 1)] = new Cell((*this)(i, j)->getType(), 
+                                                              (*this)(i, j)->hasFood());
 }
 
 
@@ -86,7 +87,7 @@ void Map::m_generateMap()
     /* Initialize the map filled of walls */
     this->m_map = new Cell *[m_height * m_width + 1];
     for (int i = 0; i < m_height * m_width; i++)
-        m_map[i] = new Cell(CellType::Wall);
+        m_map[i] = new Cell(CellType::Wall, true);
 
     int h = m_height - (m_height % 2 == 0);
     int w = even(m_width / 2 + 1);
@@ -99,7 +100,7 @@ void Map::m_generateMap()
         for (int j = 0; j < w; j++)
         {
             delete m_map[m_width * i + j];
-            m_map[m_width * i + j] = new Cell(mm[w * i + j]->getType());
+            m_map[m_width * i + j] = new Cell(mm[w * i + j]->getType(), true);
             m_map[m_width * i + j]->setPosition(Vector2<>(i, j));
         }
     
@@ -155,16 +156,24 @@ void Map::m_drawHome()
     /* Fill the home with corridor cells */
     for (int i = 1; i < homeHeight; i++)
         for (int j = 0; j < homeWidth; j++)
+        {
             m_map[m_width * (cx + i) + cy - j]->setType(CellType::Path);
-
+            m_map[m_width * (cx + i) + cy - j]->eat();
+        }
     /* Clear the entrance from possible blocking walls */
     if (m_width % 2 != 0)
         for (int i = 0; i < 2; i++)
+        {
             m_map[m_width * (cx - i) + cy]->setType(CellType::Path);
+            m_map[m_width * (cx + i) + cy]->eat();
+        }
     else
         for (int i = 0; i < 2; i++)
             for (int j = 0; j < 2; j++)
+            {
                 m_map[m_width * (cx - j) + cy - i]->setType(CellType::Path);
+                m_map[m_width * (cx + i) + cy - j]->eat();
+            }
 }   
 
 void Map::textRender() const

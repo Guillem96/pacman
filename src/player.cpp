@@ -4,7 +4,6 @@
 #include "map.h"
 #include "util.h"
 
-
 Player::Player(const Map *map)
     : m_map(map)
 {
@@ -12,7 +11,6 @@ Player::Player(const Map *map)
 
 Player::~Player()
 {
-
 }
 
 void Player::setDirection(Vector2<> dir)
@@ -24,7 +22,7 @@ void Player::setDirection(Vector2<> dir)
     }
 }
 
-void Player::init() 
+void Player::init()
 {
     /* Generate a valid initial pos */
     m_pos = Vector2<>::getRandom(m_map->getHeight(),
@@ -48,17 +46,16 @@ void Player::m_initMovement()
     m_remaining = m_animDuration;
 }
 
-
-void Player::update(long deltaTime)
+void Player::m_movementLogic(long deltaTime)
 {
     if ((*m_map)(m_pos + m_dir)->isWall())
     {
         m_dir = getRandomDirection(m_pos, m_map);
         m_initMovement();
         return;
-    } 
+    }
 
-    Vector2<float> offset = m_animDir * min((int)deltaTime, (int) m_remaining);
+    Vector2<float> offset = m_animDir * min((int)deltaTime, (int)m_remaining);
     m_animPos = m_animPos + offset;
     m_remaining -= deltaTime;
 
@@ -67,12 +64,28 @@ void Player::update(long deltaTime)
         m_pos = m_pos + m_dir;
         if (shouldChangeDirection(m_pos, m_map))
             m_dir = getRandomDirection(m_pos, m_map);
-        
+
         m_initMovement();
     }
 }
 
-void Player::render() const 
+void Player::m_gameRulesLogic(long deltaTime)
+{
+    auto cell = (*m_map)(m_pos);
+    if (cell->getType() == CellType::Path && cell->hasFood())
+    {
+        // TODO: Player score
+        cell->eat();
+    }
+}
+
+void Player::update(long deltaTime)
+{
+    m_movementLogic(deltaTime);
+    m_gameRulesLogic(deltaTime);
+}
+
+void Player::render() const
 {
     auto normPos = normalizeCoords<float>(m_animPos, m_map->getHeight());
 
@@ -85,13 +98,11 @@ void Player::render() const
 
     Color::yellowPacman.glColor();
 
-    drawCircle(w * x + w / (float)2, 
-               h * y + h / (float)2, 
+    drawCircle(w * x + w / (float)2,
+               h * y + h / (float)2,
                w * 0.4);
 }
 
-void Player::destroy() 
+void Player::destroy()
 {
-
 }
-

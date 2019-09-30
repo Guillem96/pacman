@@ -20,6 +20,8 @@ private:
     long m_remaining = 200;
 
     void m_initMovement();
+    void m_movementLogic(long deltaTime);
+    void m_gameRulesLogic(long deltaTime);
 
 public:
     Player(const Map* map);

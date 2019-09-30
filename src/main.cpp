@@ -20,15 +20,11 @@ int main(int argc, char const *argv[])
 
     srand(time(NULL));
 
-    GameManager* gm = new GameManager(WINDOW_HEIGHT, 
-                                      WINDOW_WIDTH, 
-                                      MAP_HEIGHT, MAP_WIDTH);
+    auto gm = GameManager(WINDOW_HEIGHT, WINDOW_WIDTH, 
+                          MAP_HEIGHT, MAP_WIDTH);
 
-    gm->init();
-    gm->run();
-    gm->destroy();
-
-    delete gm;
+    gm.init();
+    gm.run();
     
     return 0;
 }
