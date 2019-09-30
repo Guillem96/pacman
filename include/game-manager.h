@@ -1,12 +1,16 @@
 #pragma once
 
-#include "map.h"
+#include <vector>
 #include "game-object.h"
-#include "player.h"
+
+class Map;
+class Player;
+class Phantom;
 
 class GameManager
 {
 private:
+    int m_windowId;     //> OpenGL window ID
     int m_height;       //> OpenGL window height
     int m_width;        //> OpenGL window width
 
@@ -23,7 +27,8 @@ private:
 
     Player* m_player;
     Map* m_map;
-    
+    Phantom* m_userCtrlPhantom;
+
 public:
     GameManager(int windowHeight, 
                 int windowWidth,

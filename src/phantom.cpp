@@ -14,9 +14,9 @@ Phantom::~Phantom() {}
 
 void Phantom::setDirection(Vector2<> dir)
 {
-    if (m_userControl)
+    if (m_userControl && m_dir.getX() == 0 && m_dir.getY() == 0)
     {
-        m_dir = m_dir;
+        m_dir = dir;
         m_initMovement();
     }
 }
@@ -33,14 +33,9 @@ void Phantom::init()
 void Phantom::m_initMovement()
 {
     m_animPos = Vector2<float>(m_pos.getX(), m_pos.getY());
-
-    if (m_dir.getX() == 0 && m_dir.getY() == 0)
-        return;
-
     m_animDir = Vector2<float>(m_dir.getX(), m_dir.getY());
     m_animDir = m_animDir / (float)m_animDuration;
-
-    m_remaining = m_animDuration;
+    m_remaining = m_dir.getX() == 0 && m_dir.getY() == 0 ? 0: m_animDuration;
 }
 
 void Phantom::render() const
@@ -73,7 +68,7 @@ void Phantom::update(long deltaTime)
         return;
     } 
 
-    Vector2<float> offset = m_animDir * min((int)deltaTime, (int) m_remaining);
+    Vector2<float> offset = m_animDir * min((int)deltaTime, (int)m_remaining);
     m_animPos = m_animPos + offset;
     m_remaining -= deltaTime;
 
@@ -82,7 +77,9 @@ void Phantom::update(long deltaTime)
         m_pos = m_pos + m_dir;
         if (!m_userControl && shouldChangeDirection(m_pos, m_map))
             m_dir = getRandomDirection(m_pos, m_map);
-        
+        else if (m_userControl && shouldChangeDirection(m_pos, m_map))
+            m_dir = Vector2<>();
+
         m_initMovement();
     }
 
