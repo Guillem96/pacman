@@ -1,5 +1,4 @@
 #include <iostream>
-#include "map.h"
 #include <stdlib.h>
 #include <time.h>
 #include "game-manager.h"

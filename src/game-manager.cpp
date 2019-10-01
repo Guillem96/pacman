@@ -3,6 +3,7 @@
 #include "map.h"
 #include "player.h"
 #include "phantom.h"
+#include "game-object.h"
 
 #include <GL/glut.h>
 

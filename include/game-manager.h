@@ -1,11 +1,11 @@
 #pragma once
 
 #include <vector>
-#include "game-object.h"
 
 class Map;
 class Player;
 class Phantom;
+class GameObject;
 
 class GameManager
 {
