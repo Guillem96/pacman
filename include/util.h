@@ -3,6 +3,27 @@
 #include <iostream>
 #include <vector>
 
+class Map;
+
+class Color 
+{
+    public:
+        int r;
+        int g;
+        int b;
+
+        Color(int r, int g, int b);
+
+        void glColor() const;
+
+        static const Color darkGray;
+        static const Color yellowPacman;
+        static const Color darkGreen;
+        static const Color red;
+        static const Color cyan;
+        static const Color pink;
+};
+
 template <typename T = int> 
 class Vector2
 {
@@ -149,6 +170,10 @@ int randomRange(int, int);              //> Generates a random value inside the 
 int even(int);                          //> Converts an integer to even
 int odd(int);                           //> Converts an integer to odd
 void drawCircle(float, float, float);   //> Draws a circle using opengl
+bool shouldChangeDirection(             //> True when agent is inside an intersection
+    const Vector2<>&, const Map*);
+Vector2<> getRandomDirection(           //> Get a random valid direction
+    const Vector2<>&, const Map*);
 
 template <typename T>
 T randomChoice(std::vector<T> v)       //> Pick a random element from a vector

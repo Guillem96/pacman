@@ -4,9 +4,6 @@
 #include "map.h"
 #include "util.h"
 
-static bool shouldChangeDirection(const Vector2<>&, const Map*);
-static Vector2<> getRandomDirection(const Vector2<>&, const Map*);
-
 Player::Player(const Map *map)
     : m_map(map)
 {
@@ -14,7 +11,6 @@ Player::Player(const Map *map)
 
 Player::~Player()
 {
-
 }
 
 void Player::setDirection(Vector2<> dir)
@@ -26,7 +22,7 @@ void Player::setDirection(Vector2<> dir)
     }
 }
 
-void Player::init() 
+void Player::init()
 {
     /* Generate a valid initial pos */
     m_pos = Vector2<>::getRandom(m_map->getHeight(),
@@ -50,38 +46,16 @@ void Player::m_initMovement()
     m_remaining = m_animDuration;
 }
 
-static bool shouldChangeDirection(const Vector2<>& pos, const Map* map)
-{
-    std::vector<Cell*> adj = map->getAdjacent(pos);
-    int nPaths = 0;
-    for (auto cell: adj)
-        nPaths += !cell->isWall();
-    
-    return nPaths > 2;
-}
-
-static Vector2<> getRandomDirection(const Vector2<>& pos, const Map* map)
-{
-    std::vector<Cell*> adj = map->getAdjacent(pos);
-    std::vector<Vector2<>> directions;
-    
-    for (auto cell: adj)
-        if(!cell->isWall())
-            directions.push_back(cell->getPosition() - pos);
-
-    return randomChoice(directions);
-}
-
-void Player::update(long deltaTime)
+void Player::m_movementLogic(long deltaTime)
 {
     if ((*m_map)(m_pos + m_dir)->isWall())
     {
         m_dir = getRandomDirection(m_pos, m_map);
         m_initMovement();
         return;
-    } 
+    }
 
-    Vector2<float> offset = m_animDir * min((int)deltaTime, (int) m_remaining);
+    Vector2<float> offset = m_animDir * min((int)deltaTime, (int)m_remaining);
     m_animPos = m_animPos + offset;
     m_remaining -= deltaTime;
 
@@ -90,12 +64,28 @@ void Player::update(long deltaTime)
         m_pos = m_pos + m_dir;
         if (shouldChangeDirection(m_pos, m_map))
             m_dir = getRandomDirection(m_pos, m_map);
-        
+
         m_initMovement();
     }
 }
 
-void Player::render() const 
+void Player::m_gameRulesLogic(long deltaTime)
+{
+    auto cell = (*m_map)(m_pos);
+    if (cell->getType() == CellType::Path && cell->hasFood())
+    {
+        // TODO: Player score
+        cell->eat();
+    }
+}
+
+void Player::update(long deltaTime)
+{
+    m_movementLogic(deltaTime);
+    m_gameRulesLogic(deltaTime);
+}
+
+void Player::render() const
 {
     auto normPos = normalizeCoords<float>(m_animPos, m_map->getHeight());
 
@@ -106,14 +96,13 @@ void Player::render() const
     auto w = cellSize.getY();
     auto h = cellSize.getX();
 
-    glColor3f(244 / (float)255, 182 / (float)255, 7 / (float)255);
-    drawCircle(w * x + w / (float)2, 
-               h * y + h / (float)2, 
+    Color::yellowPacman.glColor();
+
+    drawCircle(w * x + w / (float)2,
+               h * y + h / (float)2,
                w * 0.4);
 }
 
-void Player::destroy() 
+void Player::destroy()
 {
-
 }
-

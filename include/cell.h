@@ -16,9 +16,13 @@ private:
     Vector2<> m_pos;
     CellType m_type;
     const Map* m_map;
-    
+
+    bool m_food;
+
 public:
     Cell(CellType type);
+    Cell(CellType type, bool hasFood);
+
     ~Cell();
 
     void init() override;
@@ -35,8 +39,16 @@ public:
     void setType(CellType type);
 
     /* Is the cell a wall? */
-    bool isWall();
+    bool isWall() const;
     
     /* Set a reference to the currently instanciated map */
     void setMapReference(const Map* map);
+
+    /* Empties the cell of food */
+    void eat();
+
+    /* Fills the cell with food */
+    void fill();
+
+    bool hasFood() const;
 };

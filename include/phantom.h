@@ -5,7 +5,7 @@
 
 class Map;
 
-class Player: public GameObject
+class Phantom: public GameObject
 {
 private:
     Vector2<float> m_animDir;
@@ -13,22 +13,27 @@ private:
 
     Vector2<> m_dir;
     Vector2<> m_pos;
+    
+    Color m_color = Color::cyan;
 
-    const Map* m_map;
+    const Map *m_map;
 
     long m_animDuration = 200;
     long m_remaining = 200;
 
+    bool m_userControl = false;
+    
     void m_initMovement();
-    void m_movementLogic(long deltaTime);
-    void m_gameRulesLogic(long deltaTime);
 
 public:
-    Player(const Map* map);
-    ~Player();
+    Phantom(const Map* map);
+    Phantom(const Map* map, Color color);
+
+    ~Phantom();
 
     void setDirection(Vector2<> dir);
-
+    void toogleUserControl();
+    
     void init() override;
     void render() const override;
     void update(long deltaTime) override;

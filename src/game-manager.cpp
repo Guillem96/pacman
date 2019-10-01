@@ -1,5 +1,9 @@
 #include "game-manager.h"
+
+#include "map.h"
 #include "player.h"
+#include "phantom.h"
+#include "game-object.h"
 
 #include <GL/glut.h>
 
@@ -21,7 +25,7 @@ void GameManager::init()
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(50, 50);
     glutInitWindowSize(m_width, m_height);
-    glutCreateWindow("Pacman");
+    m_windowId = glutCreateWindow("Pacman");
 
     glutDisplayFunc(drawCallBack);
     glutIdleFunc(idleCallback);
@@ -32,10 +36,21 @@ void GameManager::init()
 
     /* Initialize maze */
     m_map = new Map(m_mapWidth, m_mapHeight);
-    m_player = new Player(m_map);
-
     m_gameObjects.push_back(m_map);
+
+    /* Initialize player */
+    m_player = new Player(m_map);    
     m_gameObjects.push_back(m_player);
+
+    /* Initialize user controlled phantom */
+    m_userCtrlPhantom = new Phantom(m_map, Color::red);
+    m_userCtrlPhantom->toogleUserControl();
+    m_gameObjects.push_back(m_userCtrlPhantom);
+
+    /* Append extra phantoms */
+    m_gameObjects.push_back(new Phantom(m_map));
+    m_gameObjects.push_back(new Phantom(m_map, Color::pink));
+    m_gameObjects.push_back(new Phantom(m_map, Color::yellowPacman));
 
     for (int i = 0; i < m_gameObjects.size(); i++)
         m_gameObjects[i]->init();
@@ -80,21 +95,25 @@ void GameManager::input(unsigned char c, int x, int y)
     switch (c)
     {
     case 'w':
-        m_player->setDirection(Vector2<>::up);
+        m_userCtrlPhantom->setDirection(Vector2<>::up);
         break;
     
     case 's':
-        m_player->setDirection(Vector2<>::down);
+        m_userCtrlPhantom->setDirection(Vector2<>::down);
         break;
     
     case 'a':
-        m_player->setDirection(Vector2<>::left);
+        m_userCtrlPhantom->setDirection(Vector2<>::left);
         break;
 
     case 'd':
-        m_player->setDirection(Vector2<>::right);
+        m_userCtrlPhantom->setDirection(Vector2<>::right);
         break;
-
+    case 27: //> Escape key
+        this->destroy();
+        glutDestroyWindow(m_windowId);
+        exit(0);
+        break;
     default:
         break;
     }

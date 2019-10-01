@@ -4,7 +4,11 @@
 #include <iostream>
 #include <GL/glut.h>
 
-Cell::Cell(CellType type): m_type(type)
+Cell::Cell(CellType type): m_type(type), m_food(false)
+{
+}
+
+Cell::Cell(CellType type, bool hasFood): m_type(type), m_food(hasFood)
 {
 }
 
@@ -19,9 +23,6 @@ void Cell::init()
 
 void Cell::render() const
 {
-    if (m_type == CellType::Path)
-        return;
-
     Vector2<> normPos = Vector2<>(m_pos.getY(), 
                                   m_map->getHeight() -1 - m_pos.getX());
     auto x = normPos.getX();
@@ -31,23 +32,37 @@ void Cell::render() const
     auto w = cellSize.getY();
     auto h = cellSize.getX();
 
-    glColor3f(45 / (float)255, 85 / (float)255, 94 / (float)255);
+    if (isWall())
+    {
+        Color::darkGreen.glColor();
+        
+        glBegin(GL_QUADS);
+
+        glVertex2i(x * w, y * h);
+        glVertex2i((x + 1) * w, y * h); 
+        glVertex2i((x + 1) * w, (y + 1) * h); 
+        glVertex2i(x * w, (y + 1) * h); 
+
+        glEnd();
+        return;
+    }
     
-    glBegin(GL_QUADS);
-
-    glVertex2i(x * w, y * h);
-    glVertex2i((x + 1) * w, y * h); 
-    glVertex2i((x + 1) * w, (y + 1) * h); 
-    glVertex2i(x * w, (y + 1) * h); 
-
-    glEnd();
+    if (hasFood())
+    {
+        Color(97, 77, 25).glColor();
+        drawCircle(w * x + w / 2.f, 
+                   h * y + h / 2.f, 
+                   w * .1f);
+    }
 }
 
 void Cell::textRender() const
 {
     if (m_type == CellType::Wall)
         std::cout << '#';
-    else
+    else if (m_food)
+        std::cout << "·";
+    else 
         std::cout << ' ';
 }
 
@@ -59,8 +74,12 @@ void Cell::setPosition(Vector2<> pos) { m_pos = pos; }
 
 void Cell::setMapReference(const Map* map) { m_map = map; }
 
-bool Cell::isWall() { return m_type == CellType::Wall; }
-    
+bool Cell::isWall() const { return m_type == CellType::Wall; }
+
+void Cell::eat() { m_food = false; }
+void Cell::fill() { m_food = true; }
+bool Cell::hasFood() const { return !isWall() && m_food; }
+
 void Cell::destroy()
 {
     

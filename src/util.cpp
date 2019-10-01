@@ -4,6 +4,22 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include "cell.h"
+#include "map.h"
+
+Color::Color(int r, int g, int b): r(r), g(g), b(b) {}
+
+void Color::glColor() const
+{
+    glColor3f(r / 255.0f, g / 255.0f, b / 255.0f);
+}
+
+const Color Color::darkGray = Color(33, 33, 33);
+const Color Color::yellowPacman = Color(244, 182, 7);
+const Color Color::darkGreen = Color(45, 85, 94);
+const Color Color::red = Color(255, 0, 0);
+const Color Color::cyan = Color(0, 255, 255);
+const Color Color::pink = Color(255, 194, 239);
 
 void shuffle(int *array, int n)
 {
@@ -93,4 +109,26 @@ void drawCircle(float x, float y, float r)
             y + (r * sin(i * twicePi / triangleAmount)));
     }
     glEnd();
+}
+
+bool shouldChangeDirection(const Vector2<>& pos, const Map* map)
+{
+    std::vector<Cell*> adj = map->getAdjacent(pos);
+    int nPaths = 0;
+    for (auto cell: adj)
+        nPaths += !cell->isWall();
+    
+    return nPaths > 2;
+}
+
+Vector2<> getRandomDirection(const Vector2<>& pos, const Map* map)
+{
+    std::vector<Cell*> adj = map->getAdjacent(pos);
+    std::vector<Vector2<>> directions;
+    
+    for (auto cell: adj)
+        if(!cell->isWall())
+            directions.push_back(cell->getPosition() - pos);
+
+    return randomChoice(directions);
 }
