@@ -25,12 +25,11 @@ void Player::setDirection(Vector2<> dir)
 void Player::init()
 {
     /* Generate a valid initial pos */
-    m_pos = Vector2<>::getRandom(m_map->getHeight(),
-                                 m_map->getWidth());
+    m_pos = Vector2<>(1);
 
-    while ((*m_map)(m_pos.getX(), m_pos.getY())->isWall())
-        m_pos = Vector2<>::getRandom(m_map->getHeight(),
-                                     m_map->getWidth());
+    // while ((*m_map)(m_pos.getX(), m_pos.getY())->isWall())
+    //     m_pos = Vector2<>::getRandom(m_map->getHeight(),
+    //                                  m_map->getWidth());
 
     m_dir = getRandomDirection(m_pos, m_map);
     m_initMovement();
