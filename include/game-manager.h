@@ -5,6 +5,7 @@
 class Map;
 class Player;
 class Phantom;
+class Observer;
 class GameObject;
 
 class GameManager
@@ -28,7 +29,8 @@ private:
     Player* m_player;
     Map* m_map;
     Phantom* m_userCtrlPhantom;
-
+    Observer* m_observer;
+    
 public:
     GameManager(int windowHeight, 
                 int windowWidth,
