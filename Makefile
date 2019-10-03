@@ -47,3 +47,10 @@ clean:
 
 dist:
 	zip guillem-orellana-pacman.zip src/* include/* Makefile
+
+test: dist
+	@mkdir -p test/
+	@unzip -o guillem-orellana-pacman.zip -d test/
+	@make -C test/
+	@-timeout 5 test/pacman
+	@rm -rf test

@@ -1,6 +1,7 @@
 # Outputs
 pacman
 build/
+test/
 
 # Visual Studio Code
 .vscode/
