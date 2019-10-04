@@ -7,8 +7,9 @@ Phantom::Phantom(const Map *map) : m_map(map)
 {
 }
 
-Phantom::Phantom(const Map* map, Color color) : m_map(map), m_color(color)
-{}
+Phantom::Phantom(const Map *map, Color color) : m_map(map), m_color(color)
+{
+}
 
 Phantom::~Phantom() {}
 
@@ -35,28 +36,24 @@ void Phantom::m_initMovement()
     m_animPos = Vector2<float>(m_pos.getX(), m_pos.getY());
     m_animDir = Vector2<float>(m_dir.getX(), m_dir.getY());
     m_animDir = m_animDir / (float)m_animDuration;
-    m_remaining = m_dir.getX() == 0 && m_dir.getY() == 0 ? 0: m_animDuration;
+    m_remaining = m_dir.getX() == 0 && m_dir.getY() == 0 ? 0 : m_animDuration;
 }
 
 void Phantom::render() const
 {
-    auto normPos = normalizeCoords<float>(m_animPos, m_map->getHeight());
-
-    auto x = normPos.getX();
-    auto y = normPos.getY();
-
     auto cellSize = m_map->getGfxCellSize();
     auto w = cellSize.getY();
     auto h = cellSize.getX();
 
     m_color.glColor();
-    glBegin(GL_TRIANGLES);
-    
-    glVertex3f(x * w + w / 2.0f, y * h + h * 0.8f, 0);
-    glVertex3f(x * w + w * 0.2f, y * h + h * 0.2f, 0);
-    glVertex3f(x * w + w * 0.8f, y * h + h * 0.2f, 0);
+    glPushMatrix();
 
-    glEnd();
+    glTranslatef(w * m_animPos.getY() + w / 2.f,
+                 0,
+                 h * m_animPos.getX() + h / 2.f);
+    glRotatef(-90, 1.0, 0, 0);
+    glutSolidCone(w / 2.5f, h * .8f, 20, 20);
+    glPopMatrix();
 }
 
 void Phantom::update(long deltaTime)
@@ -66,7 +63,7 @@ void Phantom::update(long deltaTime)
         m_dir = m_userControl ? Vector2<>() : getRandomDirection(m_pos, m_map);
         m_initMovement();
         return;
-    } 
+    }
 
     Vector2<float> offset = m_animDir * min((int)deltaTime, (int)m_remaining);
     m_animPos = m_animPos + offset;
@@ -82,7 +79,6 @@ void Phantom::update(long deltaTime)
 
         m_initMovement();
     }
-
 }
 
 void Phantom::destroy()

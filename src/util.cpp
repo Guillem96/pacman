@@ -7,7 +7,7 @@
 #include "cell.h"
 #include "map.h"
 
-Color::Color(int r, int g, int b): r(r), g(g), b(b) {}
+Color::Color(int r, int g, int b) : r(r), g(g), b(b) {}
 
 void Color::glColor() const
 {
@@ -92,97 +92,75 @@ int odd(int val)
     return val;
 }
 
-void drawCircle(float x, float y, float r)
+bool shouldChangeDirection(const Vector2<> &pos, const Map *map)
 {
-    int i;
-    int triangleAmount = 20; //# of triangles used to draw circle
-
-    //GLfloat radius = 0.8f; //radius
-    GLfloat twicePi = 2.0f * 3.1415f;
-
-    glBegin(GL_TRIANGLE_FAN);
-    glVertex2f(x, y); // center of circle
-    for (i = 0; i <= triangleAmount; i++)
-    {
-        glVertex2f(
-            x + (r * cos(i * twicePi / triangleAmount)),
-            y + (r * sin(i * twicePi / triangleAmount)));
-    }
-    glEnd();
-}
-
-bool shouldChangeDirection(const Vector2<>& pos, const Map* map)
-{
-    std::vector<Cell*> adj = map->getAdjacent(pos);
+    std::vector<Cell *> adj = map->getAdjacent(pos);
     int nPaths = 0;
-    for (auto cell: adj)
+    for (auto cell : adj)
         nPaths += !cell->isWall();
-    
+
     return nPaths > 2;
 }
 
-Vector2<> getRandomDirection(const Vector2<>& pos, const Map* map)
+Vector2<> getRandomDirection(const Vector2<> &pos, const Map *map)
 {
-    std::vector<Cell*> adj = map->getAdjacent(pos);
+    std::vector<Cell *> adj = map->getAdjacent(pos);
     std::vector<Vector2<>> directions;
-    
-    for (auto cell: adj)
-        if(!cell->isWall())
+
+    for (auto cell : adj)
+        if (!cell->isWall())
             directions.push_back(cell->getPosition() - pos);
 
     return randomChoice(directions);
 }
 
-void drawCube(const Vector2<>& pos, float w, float h)
+void drawCube(const Vector2<> &pos, float w, float h)
 {
-    auto x = pos.getX();
-    auto y = pos.getY();
-    auto zSize = 5.0;
+    auto x = pos.getY();
+    auto y = pos.getX();
+    auto zSize = 20.0;
 
     glPushMatrix();
-    glTranslatef(x * w, y * h, 0);
+    glTranslatef(x * w, 0, y * h);
 
     glBegin(GL_QUADS);
-    
-    w = w / 2.f;
-    h = h / 2.f;
 
     // FRONT
-    glVertex3f(-w, -h, zSize);
-    glVertex3f(w, -h, zSize);
-    glVertex3f(w, h, zSize);
-    glVertex3f(-w, h, zSize);
+    glVertex3f(0, zSize, 0);
+    glVertex3f(w, zSize, 0);
+    glVertex3f(w, zSize, h);
+    glVertex3f(0, zSize, h);
 
     // BACK
-    glVertex3f(-w, -h, -zSize);
-    glVertex3f(-w, h, -zSize);
-    glVertex3f(w, h, -zSize);
-    glVertex3f(w, -h, -zSize);
+    glVertex3f(0, 0, 0);
+    glVertex3f(0, 0, h);
+    glVertex3f(w, 0, h);
+    glVertex3f(w, 0, 0);
 
     // LEFT
-    glVertex3f(-w, -h, zSize);
-    glVertex3f(-w, h, zSize);
-    glVertex3f(-w, h, -zSize);
-    glVertex3f(-w, -h, -zSize);
+    glVertex3f(0, zSize, 0);
+    glVertex3f(0, zSize, h);
+    glVertex3f(0, 0, h);
+    glVertex3f(0, 0, 0);
 
     // RIGHT
-    glVertex3f(w, -h, -zSize);
-    glVertex3f(w, h, -zSize);
-    glVertex3f(w, h, zSize);
-    glVertex3f(w, -h, zSize);
+    glVertex3f(w, 0, 0);
+    glVertex3f(w, 0, h);
+    glVertex3f(w, zSize, h);
+    glVertex3f(w, zSize, 0);
 
     // TOP
-    glVertex3f(-w, h, zSize);
-    glVertex3f(w, h, zSize);
-    glVertex3f(w, h, -zSize);
-    glVertex3f(-w, h, -zSize);
+    glVertex3f(0, zSize, h);
+    glVertex3f(w, zSize, h);
+    glVertex3f(w, 0, h);
+    glVertex3f(0, 0, h);
 
     // BOTTOM
-    glVertex3f(-w, -h, zSize);
-    glVertex3f(-w, -h, -zSize);
-    glVertex3f(w, -h, -zSize);
-    glVertex3f(w, -h, zSize);
+    glVertex3f(0, zSize, 0);
+    glVertex3f(0, 0, 0);
+    glVertex3f(w, 0, 0);
+    glVertex3f(w, zSize, 0);
 
     glEnd();
     glPopMatrix();
-}  
+}

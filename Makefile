@@ -5,7 +5,7 @@ IDIR 	:= include
 
 ODIR	:= build
 
-LIBS	= -lglut -lGLU -lGL -lm
+LIBS	= -lglut -lGLU -lGL -lm -ljpeg
 
 _DEPS = game-object.h \
 		cell.h \

@@ -86,8 +86,8 @@ void GameManager::render()
 
     /* Translate all objects */
     glMatrixMode(GL_MODELVIEW);
-    glTranslatef(-m_width * 0.5, -m_height * 0.5, 0);
 
+    glTranslatef(-m_width * 0.5,  0, -m_height * 0.5);
     for (int i = 0; i < m_gameObjects.size(); i++)
         m_gameObjects[i]->render();
     

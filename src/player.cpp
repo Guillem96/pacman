@@ -26,11 +26,6 @@ void Player::init()
 {
     /* Generate a valid initial pos */
     m_pos = Vector2<>(1);
-
-    // while ((*m_map)(m_pos.getX(), m_pos.getY())->isWall())
-    //     m_pos = Vector2<>::getRandom(m_map->getHeight(),
-    //                                  m_map->getWidth());
-
     m_dir = getRandomDirection(m_pos, m_map);
     m_initMovement();
 }
@@ -86,20 +81,20 @@ void Player::update(long deltaTime)
 
 void Player::render() const
 {
-    auto normPos = normalizeCoords<float>(m_animPos, m_map->getHeight());
-
-    auto x = normPos.getX();
-    auto y = normPos.getY();
+    auto x = m_animPos.getY();
+    auto y = m_animPos.getX();
 
     auto cellSize = m_map->getGfxCellSize();
     auto w = cellSize.getY();
     auto h = cellSize.getX();
 
     Color::yellowPacman.glColor();
-
-    drawCircle(w * x + w / (float)2,
-               h * y + h / (float)2,
-               w * 0.4);
+    glPushMatrix();
+    glTranslatef(w * x + w / 2.f, 
+                 0, 
+                 h * y + h / 2.f);
+    glutSolidSphere (w * .4f, 20, 20);
+    glPopMatrix();
 }
 
 void Player::destroy()

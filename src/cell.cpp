@@ -23,11 +23,9 @@ void Cell::init()
 
 void Cell::render() const
 {
-    Vector2<> normPos = Vector2<>(m_pos.getY(), 
-                                  m_map->getHeight() -1 - m_pos.getX());
-    auto x = normPos.getX();
-    auto y = normPos.getY();
-
+    auto x = m_pos.getY();
+    auto y = m_pos.getX();
+    
     auto cellSize = m_map->getGfxCellSize();
     auto w = cellSize.getY();
     auto h = cellSize.getX();
@@ -35,16 +33,7 @@ void Cell::render() const
     if (isWall())
     {
         Color::darkGreen.glColor();
-        
-        // glBegin(GL_QUADS);
-        
-        // glVertex2i(x * w, y * h);
-        // glVertex2i((x + 1) * w, y * h); 
-        // glVertex2i((x + 1) * w, (y + 1) * h); 
-        // glVertex2i(x * w, (y + 1) * h); 
-
-        // glEnd();
-        drawCube(normPos, w, h);
+        drawCube(m_pos, w, h);
 
         return;
     }
@@ -52,9 +41,12 @@ void Cell::render() const
     if (hasFood())
     {
         Color(97, 77, 25).glColor();
-        drawCircle(w * x + w / 2.f, 
-                   h * y + h / 2.f, 
-                   w * .1f);
+        glPushMatrix();
+        glTranslatef(w * x + w / 2.f, 
+                     h / 2.f,
+                     h * y + h / 2.f);
+        glutSolidSphere (w * .1f, 20, 20);
+        glPopMatrix();
     }
 }
 

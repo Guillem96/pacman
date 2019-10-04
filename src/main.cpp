@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "game-manager.h"
+#include <jpeglib.h>
 
 #define WINDOW_HEIGHT 600
 #define WINDOW_WIDTH  800
