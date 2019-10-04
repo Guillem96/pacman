@@ -132,3 +132,57 @@ Vector2<> getRandomDirection(const Vector2<>& pos, const Map* map)
 
     return randomChoice(directions);
 }
+
+void drawCube(const Vector2<>& pos, float w, float h)
+{
+    auto x = pos.getX();
+    auto y = pos.getY();
+    auto zSize = 5.0;
+
+    glPushMatrix();
+    glTranslatef(x * w, y * h, 0);
+
+    glBegin(GL_QUADS);
+    
+    w = w / 2.f;
+    h = h / 2.f;
+
+    // FRONT
+    glVertex3f(-w, -h, zSize);
+    glVertex3f(w, -h, zSize);
+    glVertex3f(w, h, zSize);
+    glVertex3f(-w, h, zSize);
+
+    // BACK
+    glVertex3f(-w, -h, -zSize);
+    glVertex3f(-w, h, -zSize);
+    glVertex3f(w, h, -zSize);
+    glVertex3f(w, -h, -zSize);
+
+    // LEFT
+    glVertex3f(-w, -h, zSize);
+    glVertex3f(-w, h, zSize);
+    glVertex3f(-w, h, -zSize);
+    glVertex3f(-w, -h, -zSize);
+
+    // RIGHT
+    glVertex3f(w, -h, -zSize);
+    glVertex3f(w, h, -zSize);
+    glVertex3f(w, h, zSize);
+    glVertex3f(w, -h, zSize);
+
+    // TOP
+    glVertex3f(-w, h, zSize);
+    glVertex3f(w, h, zSize);
+    glVertex3f(w, h, -zSize);
+    glVertex3f(-w, h, -zSize);
+
+    // BOTTOM
+    glVertex3f(-w, -h, zSize);
+    glVertex3f(-w, -h, -zSize);
+    glVertex3f(w, -h, -zSize);
+    glVertex3f(w, -h, zSize);
+
+    glEnd();
+    glPopMatrix();
+}  

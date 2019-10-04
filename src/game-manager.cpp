@@ -73,19 +73,24 @@ void GameManager::render()
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    
     m_observer->render();
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-m_width * 0.6,
-            m_width * 0.6,
-            -m_height * 0.6,
-            m_height * 0.6,
+    glOrtho(-m_width * 0.5,
+            m_width * 0.5,
+            -m_height * 0.5,
+            m_height * 0.5,
             10, 2000);
+
+    /* Translate all objects */
+    glMatrixMode(GL_MODELVIEW);
+    glTranslatef(-m_width * 0.5, -m_height * 0.5, 0);
 
     for (int i = 0; i < m_gameObjects.size(); i++)
         m_gameObjects[i]->render();
-
+    
     glutSwapBuffers();
 }
 
@@ -97,8 +102,10 @@ void GameManager::update()
         m_lastT = t;
     else
     {
+        m_observer->update(t - m_lastT);
         for (int i = 0; i < m_gameObjects.size(); i++)
             m_gameObjects[i]->update(t - m_lastT);
+        
         m_lastT = t;
     }
 
@@ -112,11 +119,9 @@ void GameManager::input(unsigned char c, int x, int y)
     case 'w':
         m_userCtrlPhantom->setDirection(Vector2<>::up);
         break;
-
     case 's':
         m_userCtrlPhantom->setDirection(Vector2<>::down);
         break;
-
     case 'a':
         m_userCtrlPhantom->setDirection(Vector2<>::left);
         break;
@@ -128,6 +133,18 @@ void GameManager::input(unsigned char c, int x, int y)
         this->destroy();
         glutDestroyWindow(m_windowId);
         exit(0);
+        break;
+    case 'j':
+        m_observer->setDirection(Vector2<>::left);
+        break;
+    case 'l':
+        m_observer->setDirection(Vector2<>::right);
+        break;
+    case 'i':
+        m_observer->setDirection(Vector2<>::up);
+        break;
+    case 'k':
+        m_observer->setDirection(Vector2<>::down);
         break;
     default:
         break;

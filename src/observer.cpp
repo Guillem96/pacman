@@ -17,12 +17,21 @@ void Observer::init()
 {
 }
 
-void Observer::update(long)
+void Observer::update(long deltaTime)
 {
+    if (m_dir.getX() < 0 && m_beta <= (90 - 4))
+        m_beta = (m_beta + 3);
+    else if (m_dir.getX() > 0 && m_beta >= (-90 + 4))
+        m_beta = m_beta - 3;
+    else if (m_dir.getY() < 0)
+        m_alpha = (m_alpha + 3) % 360;
+    else if (m_dir.getY() > 0)
+        m_alpha = (m_alpha - 3 + 360) % 360;
+    setDirection(Vector2<>());
 }
 
 void Observer::render() const
-{
+{    
     float x, y, z;
     float upx, upy, upz;
     float modul;
@@ -62,3 +71,5 @@ void Observer::render() const
 void Observer::destroy()
 {
 }
+
+void Observer::setDirection(Vector2<> dir) { m_dir = dir; }

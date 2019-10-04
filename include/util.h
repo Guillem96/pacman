@@ -170,6 +170,9 @@ int randomRange(int, int);              //> Generates a random value inside the 
 int even(int);                          //> Converts an integer to even
 int odd(int);                           //> Converts an integer to odd
 void drawCircle(float, float, float);   //> Draws a circle using opengl
+void drawCube(                          //> Draws a cube using opengl
+    const Vector2<>& pos, float w,
+    float h);
 bool shouldChangeDirection(             //> True when agent is inside an intersection
     const Vector2<>&, const Map*);
 Vector2<> getRandomDirection(           //> Get a random valid direction
@@ -189,3 +192,4 @@ Vector2<T> normalizeCoords(const Vector2<T>& pos, //> Normalize coordinates with
                                     h -1 - pos.getX());
     return normPos;
 }
+

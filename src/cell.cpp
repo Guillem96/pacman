@@ -36,14 +36,16 @@ void Cell::render() const
     {
         Color::darkGreen.glColor();
         
-        glBegin(GL_QUADS);
+        // glBegin(GL_QUADS);
+        
+        // glVertex2i(x * w, y * h);
+        // glVertex2i((x + 1) * w, y * h); 
+        // glVertex2i((x + 1) * w, (y + 1) * h); 
+        // glVertex2i(x * w, (y + 1) * h); 
 
-        glVertex2i(x * w, y * h);
-        glVertex2i((x + 1) * w, y * h); 
-        glVertex2i((x + 1) * w, (y + 1) * h); 
-        glVertex2i(x * w, (y + 1) * h); 
+        // glEnd();
+        drawCube(normPos, w, h);
 
-        glEnd();
         return;
     }
     
