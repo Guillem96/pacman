@@ -1,11 +1,17 @@
 #include "map.h"
 #include "util.h"
 #include "map-generator.h"
+#include "texture.h"
 
 #include <vector>
 #include <GL/glut.h>
 
-Map::Map(int width, int height) : m_width(width), m_height(height)
+Map::Map(int width, int height,
+         const Texture* wall, 
+         const Texture* food, 
+         const Texture* ground) 
+         : m_width(width), m_height(height), m_wallTex(wall), m_foodTex(food),
+         m_groundTex(ground)
 {
 }
 
@@ -193,7 +199,7 @@ void Map::render() const
 }
 
 void Map::destroy()
-{
+{   
     for (int i = 0; i < m_height * m_width; i++)
         delete m_map[i];
 

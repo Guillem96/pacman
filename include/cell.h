@@ -2,6 +2,7 @@
 
 #include "game-object.h"
 #include "util.h"
+#include "texture.h"
 
 class Map;
 

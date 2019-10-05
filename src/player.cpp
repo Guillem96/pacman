@@ -91,7 +91,7 @@ void Player::render() const
     Color::yellowPacman.glColor();
     glPushMatrix();
     glTranslatef(w * x + w / 2.f, 
-                 0, 
+                 h / 2.f, 
                  h * y + h / 2.f);
     glutSolidSphere (w * .4f, 20, 20);
     glPopMatrix();

@@ -126,40 +126,40 @@ void drawCube(const Vector2<> &pos, float w, float h)
     glBegin(GL_QUADS);
 
     // FRONT
-    glVertex3f(0, zSize, 0);
-    glVertex3f(w, zSize, 0);
-    glVertex3f(w, zSize, h);
-    glVertex3f(0, zSize, h);
+    glTexCoord2f(0, 0); glVertex3f(0, zSize, 0);
+    glTexCoord2f(0, 1); glVertex3f(w, zSize, 0);
+    glTexCoord2f(1, 1); glVertex3f(w, zSize, h);
+    glTexCoord2f(1, 0); glVertex3f(0, zSize, h);
 
     // BACK
-    glVertex3f(0, 0, 0);
-    glVertex3f(0, 0, h);
-    glVertex3f(w, 0, h);
-    glVertex3f(w, 0, 0);
+    glTexCoord2f(0, 0); glVertex3f(0, 0, 0);
+    glTexCoord2f(0, 1); glVertex3f(0, 0, h);
+    glTexCoord2f(1, 1); glVertex3f(w, 0, h);
+    glTexCoord2f(1, 0); glVertex3f(w, 0, 0);
 
     // LEFT
-    glVertex3f(0, zSize, 0);
-    glVertex3f(0, zSize, h);
-    glVertex3f(0, 0, h);
-    glVertex3f(0, 0, 0);
+    glTexCoord2f(0, 0); glVertex3f(0, zSize, 0);
+    glTexCoord2f(0, 1); glVertex3f(0, zSize, h);
+    glTexCoord2f(1, 1); glVertex3f(0, 0, h);
+    glTexCoord2f(1, 0); glVertex3f(0, 0, 0);
 
     // RIGHT
-    glVertex3f(w, 0, 0);
-    glVertex3f(w, 0, h);
-    glVertex3f(w, zSize, h);
-    glVertex3f(w, zSize, 0);
+    glTexCoord2f(0, 0); glVertex3f(w, 0, 0);
+    glTexCoord2f(0, 1); glVertex3f(w, 0, h);
+    glTexCoord2f(1, 1); glVertex3f(w, zSize, h);
+    glTexCoord2f(1, 0); glVertex3f(w, zSize, 0);
 
     // TOP
-    glVertex3f(0, zSize, h);
-    glVertex3f(w, zSize, h);
-    glVertex3f(w, 0, h);
-    glVertex3f(0, 0, h);
+    glTexCoord2f(0, 0); glVertex3f(0, zSize, h);
+    glTexCoord2f(0, 1); glVertex3f(w, zSize, h);
+    glTexCoord2f(1, 1); glVertex3f(w, 0, h);
+    glTexCoord2f(1, 0); glVertex3f(0, 0, h);
 
     // BOTTOM
-    glVertex3f(0, zSize, 0);
-    glVertex3f(0, 0, 0);
-    glVertex3f(w, 0, 0);
-    glVertex3f(w, zSize, 0);
+    glTexCoord2f(0, 0); glVertex3f(0, zSize, 0);
+    glTexCoord2f(0, 1); glVertex3f(0, 0, 0);
+    glTexCoord2f(1, 1); glVertex3f(w, 0, 0);
+    glTexCoord2f(1, 0); glVertex3f(w, zSize, 0);
 
     glEnd();
     glPopMatrix();

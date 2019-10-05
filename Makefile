@@ -15,7 +15,9 @@ _DEPS = game-object.h \
 		game-manager.h \
 		player.h \
 		phantom.h \
-		observer.h
+		observer.h \
+		texture.h \
+		texture-manager.h
 
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
@@ -27,7 +29,9 @@ _OBJ = main.o \
 		game-manager.o \
 		player.o \
 		phantom.o \
-		observer.o
+		observer.o \
+		texture.o \
+		texture-manager.o
 		
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 

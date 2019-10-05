@@ -4,6 +4,7 @@
 #include "player.h"
 #include "phantom.h"
 #include "game-object.h"
+#include "texture-manager.h"
 #include "observer.h"
 
 #include <GL/glut.h>
@@ -30,15 +31,24 @@ void GameManager::init()
     m_windowId = glutCreateWindow("Pacman");
 
     glEnable(GL_DEPTH_TEST);
-
+    
     glutDisplayFunc(drawCallBack);
     glutIdleFunc(idleCallback);
     glutKeyboardFunc(keyboardCallback);
 
     m_observer = new Observer(90, 30, 450);
+    
+    /* Load textures */
+    m_textureManager = new TextureManager();
+    m_textureManager->loadTexture("assets/walls.jpg", "wall", 32);
+    m_textureManager->loadTexture("assets/walls.jpg", "food", 32);
+    m_textureManager->loadTexture("assets/unnamed.jpg", "ground", 512);
 
     /* Initialize maze */
-    m_map = new Map(m_mapWidth, m_mapHeight);
+    m_map = new Map(m_mapWidth, m_mapHeight,
+                    (*m_textureManager)["wall"],
+                    (*m_textureManager)["food"],
+                    (*m_textureManager)["ground"]);
     m_gameObjects.push_back(m_map);
 
     /* Initialize player */
@@ -68,8 +78,6 @@ void GameManager::run()
 
 void GameManager::render()
 {
-    glClearColor(0.13, 0.13, 0.13, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -84,10 +92,16 @@ void GameManager::render()
             m_height * 0.5,
             10, 2000);
 
-    /* Translate all objects */
-    glMatrixMode(GL_MODELVIEW);
+    glClearColor(0.13, 0.13, 0.13, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    glPolygonMode(GL_FRONT, GL_FILL);
+    glPolygonMode(GL_BACK, GL_FILL);
+
+    /* Translate all objects */
+    glMatrixMode(GL_MODELVIEW); 
     glTranslatef(-m_width * 0.5,  0, -m_height * 0.5);
+    
     for (int i = 0; i < m_gameObjects.size(); i++)
         m_gameObjects[i]->render();
     
@@ -125,7 +139,6 @@ void GameManager::input(unsigned char c, int x, int y)
     case 'a':
         m_userCtrlPhantom->setDirection(Vector2<>::left);
         break;
-
     case 'd':
         m_userCtrlPhantom->setDirection(Vector2<>::right);
         break;
@@ -164,6 +177,9 @@ void GameManager::destroy()
         delete m_gameObjects[i];
     }
     m_gameObjects.clear();
+
+    m_textureManager->destroy();
+    delete m_textureManager;
 }
 
 void GameManager::drawCallBack() { g_gameManager->render(); }
