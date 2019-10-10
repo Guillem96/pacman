@@ -31,7 +31,8 @@ void GameManager::init()
     m_windowId = glutCreateWindow("Pacman");
 
     glEnable(GL_DEPTH_TEST);
-    
+    glEnable(GL_LIGHTING);
+
     glutDisplayFunc(drawCallBack);
     glutIdleFunc(idleCallback);
     glutKeyboardFunc(keyboardCallback);
@@ -78,7 +79,6 @@ void GameManager::run()
 
 void GameManager::render()
 {
-
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
@@ -93,7 +93,8 @@ void GameManager::render()
             10, 2000);
 
     glClearColor(0.13, 0.13, 0.13, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | 
+            GL_DEPTH_BUFFER_BIT);
 
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_FILL);
