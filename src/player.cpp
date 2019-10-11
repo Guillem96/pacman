@@ -88,8 +88,10 @@ void Player::render() const
     auto w = cellSize.getY();
     auto h = cellSize.getX();
 
-    Color::yellowPacman.glColor();
     glPushMatrix();
+    glMaterialfv(GL_FRONT_AND_BACK, 
+                 GL_AMBIENT_AND_DIFFUSE, 
+                 Color::yellowPacman.glColorfv());
     glTranslatef(w * x + w / 2.f, 
                  h / 2.f, 
                  h * y + h / 2.f);

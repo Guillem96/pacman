@@ -15,7 +15,6 @@ private:
     
     const Texture* m_wallTex;
     const Texture* m_groundTex;
-    const Texture* m_foodTex; 
 
     void m_drawHome();      //> Draws phantoms house at the center of tha maze
     void m_generateMap();   //> Generates the whole map using DFS
@@ -27,7 +26,6 @@ public:
     
     Map(int width, int height,
         const Texture* wall, 
-        const Texture* food, 
         const Texture* ground);
     Map();
     ~Map();

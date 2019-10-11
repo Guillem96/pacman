@@ -32,7 +32,6 @@ void Cell::render() const
 
     if (isWall())
     {
-        // Color::darkGreen.glColor();
         m_map->m_wallTex->active();
         drawCube(m_pos, w, h);
         glDisable(GL_TEXTURE_2D);
@@ -45,6 +44,7 @@ void Cell::render() const
     m_map->m_groundTex->active();
     glBegin(GL_QUADS);
 
+    glNormal3f(0, -1, 0);
     glTexCoord2f(0, 0); glVertex3f(0, -1, 0);
     glTexCoord2f(0, 1); glVertex3f(0, -1, h);
     glTexCoord2f(1, 1); glVertex3f(w, -1, h);
@@ -57,8 +57,10 @@ void Cell::render() const
 
     if (hasFood())
     {
-        Color(245, 104, 104).glColor();
         glPushMatrix();
+        glMaterialfv(GL_FRONT_AND_BACK, 
+                     GL_AMBIENT_AND_DIFFUSE, 
+                     Color(245, 104, 104).glColorfv());
         glTranslatef(w * x + w / 2.f, 
                      h / 2.f,
                      h * y + h / 2.f);

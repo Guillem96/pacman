@@ -14,12 +14,24 @@ void Color::glColor() const
     glColor3f(r / 255.0f, g / 255.0f, b / 255.0f);
 }
 
+float* Color::glColorfv() const
+{   
+    float* res = new float[4];
+    
+    res[0] = r / 255.f;
+    res[1] = g / 255.f;
+    res[2] = b / 255.f;
+    res[3] = 1.f;
+    return res;
+}
+
 const Color Color::darkGray = Color(33, 33, 33);
 const Color Color::yellowPacman = Color(244, 182, 7);
 const Color Color::darkGreen = Color(45, 85, 94);
 const Color Color::red = Color(255, 0, 0);
 const Color Color::cyan = Color(0, 255, 255);
 const Color Color::pink = Color(255, 194, 239);
+const Color Color::white = Color(255, 255, 255);
 
 void shuffle(int *array, int n)
 {
@@ -124,38 +136,44 @@ void drawCube(const Vector2<> &pos, float w, float h)
     glTranslatef(x * w, 0, y * h);
 
     glBegin(GL_QUADS);
-
+    
     // FRONT
+    glNormal3f(0, 0, 1);
     glTexCoord2f(0, 0); glVertex3f(0, zSize, 0);
     glTexCoord2f(0, 1); glVertex3f(w, zSize, 0);
     glTexCoord2f(1, 1); glVertex3f(w, zSize, h);
     glTexCoord2f(1, 0); glVertex3f(0, zSize, h);
 
     // BACK
+    glNormal3f(0, 0, -1);
     glTexCoord2f(0, 0); glVertex3f(0, 0, 0);
     glTexCoord2f(0, 1); glVertex3f(0, 0, h);
     glTexCoord2f(1, 1); glVertex3f(w, 0, h);
     glTexCoord2f(1, 0); glVertex3f(w, 0, 0);
 
     // LEFT
+    glNormal3f(-1, 0, 0);
     glTexCoord2f(0, 0); glVertex3f(0, zSize, 0);
     glTexCoord2f(0, 1); glVertex3f(0, zSize, h);
     glTexCoord2f(1, 1); glVertex3f(0, 0, h);
     glTexCoord2f(1, 0); glVertex3f(0, 0, 0);
 
     // RIGHT
+    glNormal3f(1, 0, 0);
     glTexCoord2f(0, 0); glVertex3f(w, 0, 0);
     glTexCoord2f(0, 1); glVertex3f(w, 0, h);
     glTexCoord2f(1, 1); glVertex3f(w, zSize, h);
     glTexCoord2f(1, 0); glVertex3f(w, zSize, 0);
 
     // TOP
+    glNormal3f(0, 1, 0);
     glTexCoord2f(0, 0); glVertex3f(0, zSize, h);
     glTexCoord2f(0, 1); glVertex3f(w, zSize, h);
     glTexCoord2f(1, 1); glVertex3f(w, 0, h);
     glTexCoord2f(1, 0); glVertex3f(0, 0, h);
 
     // BOTTOM
+    glNormal3f(0, -1, 0);
     glTexCoord2f(0, 0); glVertex3f(0, zSize, 0);
     glTexCoord2f(0, 1); glVertex3f(0, 0, 0);
     glTexCoord2f(1, 1); glVertex3f(w, 0, 0);

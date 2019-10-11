@@ -15,6 +15,7 @@ class Color
         Color(int r, int g, int b);
 
         void glColor() const;
+        float* glColorfv() const;
 
         static const Color darkGray;
         static const Color yellowPacman;
@@ -22,6 +23,7 @@ class Color
         static const Color red;
         static const Color cyan;
         static const Color pink;
+        static const Color white;
 };
 
 template <typename T = int> 

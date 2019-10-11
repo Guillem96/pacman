@@ -39,7 +39,7 @@ static void readJpeg(const char *filename,
 
     *image = new u8[cinfo.output_width * cinfo.output_height * cinfo.output_components];
 
-    buffer = new u8*;
+    buffer = new u8 *;
     buffer[0] = new u8[cinfo.output_width * cinfo.output_components];
 
     i = 0;
@@ -71,7 +71,6 @@ void TextureManager::loadTexture(std::string fileName,
     long i, j;
     long k, h;
 
-
     readJpeg(fileName.c_str(), &buffer, &width, &height);
 
     buffer2 = new u8[dim * dim * 3];
@@ -90,21 +89,23 @@ void TextureManager::loadTexture(std::string fileName,
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+    // glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, dim, dim, 0, GL_RGB, GL_UNSIGNED_BYTE, buffer2);
-    
+
     m_textures[name] = new Texture(m_id, buffer2, dim, dim);
     delete buffer;
 }
 
-const Texture* TextureManager::operator[](std::string name)
+const Texture *TextureManager::operator[](std::string name)
 {
     return m_textures[name];
 }
 
 void TextureManager::destroy()
 {
-    for (const auto& texture : m_textures) {
+    for (const auto &texture : m_textures)
+    {
         auto t = texture.second;
         t->destroy();
         delete t;

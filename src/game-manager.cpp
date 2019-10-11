@@ -3,6 +3,7 @@
 #include "map.h"
 #include "player.h"
 #include "phantom.h"
+#include "lighting.h"
 #include "game-object.h"
 #include "texture-manager.h"
 #include "observer.h"
@@ -39,16 +40,18 @@ void GameManager::init()
 
     m_observer = new Observer(90, 30, 450);
     
+    /* Initi lights */
+    auto lightManager = new Lighting();
+    m_gameObjects.push_back(lightManager);
+
     /* Load textures */
     m_textureManager = new TextureManager();
     m_textureManager->loadTexture("assets/walls.jpg", "wall", 32);
-    m_textureManager->loadTexture("assets/walls.jpg", "food", 32);
-    m_textureManager->loadTexture("assets/unnamed.jpg", "ground", 512);
+    m_textureManager->loadTexture("assets/ground.jpg", "ground", 512);
 
     /* Initialize maze */
     m_map = new Map(m_mapWidth, m_mapHeight,
                     (*m_textureManager)["wall"],
-                    (*m_textureManager)["food"],
                     (*m_textureManager)["ground"]);
     m_gameObjects.push_back(m_map);
 
@@ -98,7 +101,8 @@ void GameManager::render()
 
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_FILL);
-
+    glShadeModel(GL_SMOOTH);
+    
     /* Translate all objects */
     glMatrixMode(GL_MODELVIEW); 
     glTranslatef(-m_width * 0.5,  0, -m_height * 0.5);

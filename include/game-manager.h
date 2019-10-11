@@ -7,6 +7,7 @@ class Player;
 class Phantom;
 class Observer;
 class GameObject;
+class Lighting;
 class TextureManager;
 
 class GameManager
@@ -32,6 +33,7 @@ private:
     Phantom* m_userCtrlPhantom;
     Observer* m_observer;
     TextureManager* m_textureManager;
+    Lighting* m_lighting;
     
 public:
     GameManager(int windowHeight, 

@@ -45,9 +45,10 @@ void Phantom::render() const
     auto w = cellSize.getY();
     auto h = cellSize.getX();
 
-    m_color.glColor();
     glPushMatrix();
-
+    glMaterialfv(GL_FRONT_AND_BACK, 
+                    GL_AMBIENT_AND_DIFFUSE, 
+                    m_color.glColorfv());
     glTranslatef(w * m_animPos.getY() + w / 2.f,
                  0,
                  h * m_animPos.getX() + h / 2.f);

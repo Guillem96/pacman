@@ -8,9 +8,8 @@
 
 Map::Map(int width, int height,
          const Texture* wall, 
-         const Texture* food, 
          const Texture* ground) 
-         : m_width(width), m_height(height), m_wallTex(wall), m_foodTex(food),
+         : m_width(width), m_height(height), m_wallTex(wall),
          m_groundTex(ground)
 {
 }
