@@ -1,7 +1,6 @@
 #include "player.h"
 
 #include <GL/glut.h>
-#include "map.h"
 #include "util.h"
 
 Player::Player(const Map *map)

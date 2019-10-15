@@ -6,14 +6,21 @@
 #include "game-object.h"
 #include "util.h"
 
+class Player;
+
 class Lighting : public GameObject
 {
 private:
-    int m_ambientLightPos[3] = {100, 75, 1};
+    const Player* m_player;
+
+    int m_ambientLightPos[4] = {0, 0, 0, 1};
     float* m_ambientColor;
 
+    float m_playerDir[3];
+    float m_playerLightPos[4] = {0, 0, 0, 1};
+
 public:
-    Lighting();
+    Lighting(const Player* player);
     ~Lighting();
 
     void init() override;

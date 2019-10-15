@@ -137,15 +137,15 @@ void drawCube(const Vector2<> &pos, float w, float h)
 
     glBegin(GL_QUADS);
     
-    // FRONT
-    glNormal3f(0, 0, 1);
+    // TOP
+    glNormal3f(0, 1, 0);
     glTexCoord2f(0, 0); glVertex3f(0, zSize, 0);
     glTexCoord2f(0, 1); glVertex3f(w, zSize, 0);
     glTexCoord2f(1, 1); glVertex3f(w, zSize, h);
     glTexCoord2f(1, 0); glVertex3f(0, zSize, h);
 
-    // BACK
-    glNormal3f(0, 0, -1);
+    // BOTTOM
+    glNormal3f(0, -1, 0);
     glTexCoord2f(0, 0); glVertex3f(0, 0, 0);
     glTexCoord2f(0, 1); glVertex3f(0, 0, h);
     glTexCoord2f(1, 1); glVertex3f(w, 0, h);
@@ -165,15 +165,15 @@ void drawCube(const Vector2<> &pos, float w, float h)
     glTexCoord2f(1, 1); glVertex3f(w, zSize, h);
     glTexCoord2f(1, 0); glVertex3f(w, zSize, 0);
 
-    // TOP
-    glNormal3f(0, 1, 0);
+    // FRONT
+    glNormal3f(0, 0, 1);
     glTexCoord2f(0, 0); glVertex3f(0, zSize, h);
     glTexCoord2f(0, 1); glVertex3f(w, zSize, h);
     glTexCoord2f(1, 1); glVertex3f(w, 0, h);
     glTexCoord2f(1, 0); glVertex3f(0, 0, h);
 
-    // BOTTOM
-    glNormal3f(0, -1, 0);
+    // BACK
+    glNormal3f(0, 0, -1);
     glTexCoord2f(0, 0); glVertex3f(0, zSize, 0);
     glTexCoord2f(0, 1); glVertex3f(0, 0, 0);
     glTexCoord2f(1, 1); glVertex3f(w, 0, 0);

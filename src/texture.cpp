@@ -13,8 +13,8 @@ void Texture::active() const
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, m_id);
     glMaterialfv(GL_FRONT_AND_BACK, 
-                GL_AMBIENT_AND_DIFFUSE, 
-                Color::white.glColorfv());
+                 GL_AMBIENT_AND_DIFFUSE, 
+                 Color::white.glColorfv());
 }
 
     

@@ -47,8 +47,8 @@ void Phantom::render() const
 
     glPushMatrix();
     glMaterialfv(GL_FRONT_AND_BACK, 
-                    GL_AMBIENT_AND_DIFFUSE, 
-                    m_color.glColorfv());
+                 GL_AMBIENT_AND_DIFFUSE, 
+                 m_color.glColorfv());
     glTranslatef(w * m_animPos.getY() + w / 2.f,
                  0,
                  h * m_animPos.getX() + h / 2.f);

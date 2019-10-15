@@ -38,25 +38,23 @@ void GameManager::init()
     glutIdleFunc(idleCallback);
     glutKeyboardFunc(keyboardCallback);
 
-    m_observer = new Observer(90, 30, 450);
-    
-    /* Initi lights */
-    auto lightManager = new Lighting();
-    m_gameObjects.push_back(lightManager);
-
     /* Load textures */
     m_textureManager = new TextureManager();
-    m_textureManager->loadTexture("assets/walls.jpg", "wall", 32);
-    m_textureManager->loadTexture("assets/ground.jpg", "ground", 512);
+    m_textureManager->loadTexture("assets/walls.jpg", "wall", 64);
+    m_textureManager->loadTexture("assets/ground.jpg", "ground", 64);
 
-    /* Initialize maze */
+    m_observer = new Observer(90, 30, 450);
+    
     m_map = new Map(m_mapWidth, m_mapHeight,
-                    (*m_textureManager)["wall"],
-                    (*m_textureManager)["ground"]);
-    m_gameObjects.push_back(m_map);
+                (*m_textureManager)["wall"],
+                (*m_textureManager)["ground"]);
 
-    /* Initialize player */
     m_player = new Player(m_map);
+
+    auto lightManager = new Lighting(m_player);
+
+    m_gameObjects.push_back(lightManager);
+    m_gameObjects.push_back(m_map);
     m_gameObjects.push_back(m_player);
 
     /* Initialize user controlled phantom */
@@ -68,6 +66,7 @@ void GameManager::init()
     m_gameObjects.push_back(new Phantom(m_map));
     m_gameObjects.push_back(new Phantom(m_map, Color::pink));
     m_gameObjects.push_back(new Phantom(m_map, Color::yellowPacman));
+
 
     for (int i = 0; i < m_gameObjects.size(); i++)
         m_gameObjects[i]->init();
@@ -101,7 +100,6 @@ void GameManager::render()
 
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_FILL);
-    glShadeModel(GL_SMOOTH);
     
     /* Translate all objects */
     glMatrixMode(GL_MODELVIEW); 

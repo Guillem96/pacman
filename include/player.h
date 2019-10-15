@@ -2,8 +2,8 @@
 
 #include "util.h"
 #include "game-object.h"
-
-class Map;
+#include "lighting.h"
+#include "map.h"
 
 class Player: public GameObject
 {
@@ -24,6 +24,8 @@ private:
     void m_gameRulesLogic(long deltaTime);
 
 public:
+    friend Lighting;
+
     Player(const Map* map);
     ~Player();
 
