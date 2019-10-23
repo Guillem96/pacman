@@ -9,6 +9,13 @@
 
 Color::Color(int r, int g, int b) : r(r), g(g), b(b) {}
 
+Color Color::whiten(float intensity) const
+{
+    return Color((int)r * intensity, 
+                 (int)b * intensity, 
+                 (int)b * intensity);
+}
+
 void Color::glColor() const
 {
     glColor3f(r / 255.0f, g / 255.0f, b / 255.0f);

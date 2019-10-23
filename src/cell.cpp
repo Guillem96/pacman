@@ -39,16 +39,16 @@ void Cell::render() const
     }
 
     glPushMatrix();
-    glTranslatef(w * x, 0, h * y);
+    glTranslatef(w * x, -1, h * y);
 
     m_map->m_groundTex->active();
     glBegin(GL_QUADS);
 
-    glNormal3f(0, -1, 0);
-    glTexCoord2f(0, 0); glVertex3f(0, -1, 0);
-    glTexCoord2f(0, 1); glVertex3f(0, -1, h);
-    glTexCoord2f(1, 1); glVertex3f(w, -1, h);
-    glTexCoord2f(1, 0); glVertex3f(w, -1, 0);
+    glNormal3f(0, 1, 0);
+    glTexCoord2f(1, 1); glVertex3f(w, 0, h);
+    glTexCoord2f(0, 1); glVertex3f(0, 0, h);
+    glTexCoord2f(0, 0); glVertex3f(0, 0, 0);
+    glTexCoord2f(1, 0); glVertex3f(w, 0, 0);
 
     glEnd();
     glDisable(GL_TEXTURE_2D);

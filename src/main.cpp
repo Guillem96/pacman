@@ -4,8 +4,8 @@
 #include "game-manager.h"
 #include <jpeglib.h>
 
-#define WINDOW_HEIGHT 600
-#define WINDOW_WIDTH  800
+#define WINDOW_HEIGHT 800
+#define WINDOW_WIDTH  1000
 
 #define MAP_HEIGHT 19
 #define MAP_WIDTH  31

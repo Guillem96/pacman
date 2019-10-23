@@ -16,6 +16,7 @@ class Color
 
         void glColor() const;
         float* glColorfv() const;
+        Color whiten(float intensity) const; 
 
         static const Color darkGray;
         static const Color yellowPacman;

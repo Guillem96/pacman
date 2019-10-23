@@ -2,6 +2,7 @@
 
 #include "util.h"
 #include "game-object.h"
+#include "lighting.h"
 
 class Map;
 
@@ -26,6 +27,8 @@ private:
     void m_initMovement();
 
 public:
+    friend Lighting;
+
     Phantom(const Map* map);
     Phantom(const Map* map, Color color);
 

@@ -51,21 +51,24 @@ void GameManager::init()
 
     m_player = new Player(m_map);
 
-    auto lightManager = new Lighting(m_player);
+    m_userCtrlPhantom = new Phantom(m_map, Color::red);
+    m_userCtrlPhantom->toogleUserControl();
+
+    std::vector<const Phantom*> phantoms;
+    phantoms.push_back(m_userCtrlPhantom);
+    phantoms.push_back(new Phantom(m_map));
+    phantoms.push_back(new Phantom(m_map, Color::pink));
+    phantoms.push_back(new Phantom(m_map, Color::yellowPacman));
+
+    auto lightManager = new Lighting(m_player, phantoms);
 
     m_gameObjects.push_back(lightManager);
     m_gameObjects.push_back(m_map);
     m_gameObjects.push_back(m_player);
 
-    /* Initialize user controlled phantom */
-    m_userCtrlPhantom = new Phantom(m_map, Color::red);
-    m_userCtrlPhantom->toogleUserControl();
-    m_gameObjects.push_back(m_userCtrlPhantom);
-
-    /* Append extra phantoms */
-    m_gameObjects.push_back(new Phantom(m_map));
-    m_gameObjects.push_back(new Phantom(m_map, Color::pink));
-    m_gameObjects.push_back(new Phantom(m_map, Color::yellowPacman));
+    /* Append phantoms */
+    for(int i = 0; i < phantoms.size(); i++)
+        m_gameObjects.push_back((GameObject*)phantoms[i]);
 
 
     for (int i = 0; i < m_gameObjects.size(); i++)
