@@ -10,6 +10,10 @@ class GameObject;
 class Lighting;
 class TextureManager;
 
+class Agent;
+class Environment;
+class FeatureExtractor;
+
 class GameManager
 {
 private:
@@ -30,11 +34,17 @@ private:
 
     Player* m_player;
     Map* m_map;
-    Phantom* m_userCtrlPhantom;
     Observer* m_observer;
     TextureManager* m_textureManager;
     Lighting* m_lighting;
     
+    // Reinforcement learning variables
+    Environment* m_env;
+    FeatureExtractor* m_fe;
+    Agent* m_agent;
+    
+    void m_initObjects();
+    void m_restart();
 public:
     GameManager(int windowHeight, 
                 int windowWidth,

@@ -25,7 +25,7 @@ void Player::init()
 {
     /* Generate a valid initial pos */
     m_pos = Vector2<>(1);
-    m_dir = getRandomDirection(m_pos, m_map);
+    m_dir = Vector2<>(0);
     m_initMovement();
 }
 
@@ -41,10 +41,12 @@ void Player::m_initMovement()
 
 void Player::m_movementLogic(long deltaTime)
 {
+    if (m_dir.getX() == 0 && m_dir.getY() == 0)
+        return;
+
     if ((*m_map)(m_pos + m_dir)->isWall())
     {
-        m_dir = getRandomDirection(m_pos, m_map);
-        m_initMovement();
+        m_dir = Vector2<>(0, 0);
         return;
     }
 
@@ -55,10 +57,7 @@ void Player::m_movementLogic(long deltaTime)
     if (m_remaining <= 0)
     {
         m_pos = m_pos + m_dir;
-        if (shouldChangeDirection(m_pos, m_map))
-            m_dir = getRandomDirection(m_pos, m_map);
-
-        m_initMovement();
+        m_dir = Vector2<>(0, 0);
     }
 }
 

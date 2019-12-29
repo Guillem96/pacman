@@ -41,4 +41,6 @@ public:
     void render() const override;
     void update(long deltaTime) override;
     void destroy();
+
+    const Vector2<>& getPosition() const { return m_pos; }
 };

@@ -18,7 +18,11 @@ _DEPS = game-object.h \
 		observer.h \
 		texture.h \
 		texture-manager.h \
-		lighting.h
+		lighting.h \
+		world-types.h \
+		agent.h \
+		environment.h \
+		feature-extractor.h
 
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
@@ -33,7 +37,10 @@ _OBJ = main.o \
 		observer.o \
 		texture.o \
 		texture-manager.o \
-		lighting.o
+		lighting.o \
+		agent.o \
+		environment.o \
+		feature-extractor.o
 		
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
@@ -51,10 +58,11 @@ $(TARGET): $(OBJ)
 	g++ -o $@ $^ $(LIBS) 
 
 clean:
+	@rm -rf $(ODIR)
 	@rm -f $(TARGET)
 
 dist:
-	zip guillem-orellana-pacman.zip src/* include/* Makefile
+	zip guillem-orellana-pacman.zip assets/* src/* include/* Makefile
 
 test: dist
 	@mkdir -p test/

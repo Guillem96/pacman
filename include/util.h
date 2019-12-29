@@ -47,6 +47,7 @@ public:
 
     bool operator==(Vector2<T> other);
     bool operator!=(Vector2<T> other);
+    bool operator<(const Vector2<T> other) const;
     Vector2<T> operator+(Vector2<T> other) const;
     Vector2<T> operator-(Vector2<T> other) const;
     Vector2<T> operator*(int scalar) const;
@@ -113,6 +114,12 @@ template <typename T>
 bool Vector2<T>::operator!=(Vector2<T> other)
 {
     return !((*this) == other);
+}
+
+template <typename T> 
+bool Vector2<T>::operator<(const Vector2<T> other) const
+{
+    return m_x < other.m_x;
 }
 
 template <typename T> 

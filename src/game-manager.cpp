@@ -8,6 +8,10 @@
 #include "texture-manager.h"
 #include "observer.h"
 
+#include "feature-extractor.h"
+#include "environment.h"
+#include "agent.h"
+
 #include <GL/glut.h>
 #include <math.h>
 
@@ -38,43 +42,7 @@ void GameManager::init()
     glutIdleFunc(idleCallback);
     glutKeyboardFunc(keyboardCallback);
 
-    /* Load textures */
-    m_textureManager = new TextureManager();
-    m_textureManager->loadTexture("assets/walls.jpg", "wall", 64);
-    m_textureManager->loadTexture("assets/ground.jpg", "ground", 64);
-
-    m_observer = new Observer(90, 30, 450);
-    
-    m_map = new Map(m_mapWidth, m_mapHeight,
-                (*m_textureManager)["wall"],
-                (*m_textureManager)["ground"]);
-
-    m_player = new Player(m_map);
-
-    m_userCtrlPhantom = new Phantom(m_map, Color::red);
-    m_userCtrlPhantom->toogleUserControl();
-
-    std::vector<const Phantom*> phantoms;
-    phantoms.push_back(m_userCtrlPhantom);
-    phantoms.push_back(new Phantom(m_map));
-    phantoms.push_back(new Phantom(m_map, Color::pink));
-    phantoms.push_back(new Phantom(m_map, Color::yellowPacman));
-
-    auto lightManager = new Lighting(m_player, phantoms);
-
-    m_gameObjects.push_back(lightManager);
-    m_gameObjects.push_back(m_map);
-    m_gameObjects.push_back(m_player);
-
-    /* Append phantoms */
-    for(int i = 0; i < phantoms.size(); i++)
-        m_gameObjects.push_back((GameObject*)phantoms[i]);
-
-
-    for (int i = 0; i < m_gameObjects.size(); i++)
-        m_gameObjects[i]->init();
-
-    g_gameManager = this;
+    m_initObjects();
 }
 
 void GameManager::run()
@@ -136,22 +104,13 @@ void GameManager::input(unsigned char c, int x, int y)
 {
     switch (c)
     {
-    case 'w':
-        m_userCtrlPhantom->setDirection(Vector2<>::up);
-        break;
-    case 's':
-        m_userCtrlPhantom->setDirection(Vector2<>::down);
-        break;
-    case 'a':
-        m_userCtrlPhantom->setDirection(Vector2<>::left);
-        break;
-    case 'd':
-        m_userCtrlPhantom->setDirection(Vector2<>::right);
-        break;
     case 27: //> Escape key
         this->destroy();
         glutDestroyWindow(m_windowId);
         exit(0);
+        break;
+    case 'r':
+        m_restart();
         break;
     case 'j':
         m_observer->setDirection(Vector2<>::left);
@@ -186,6 +145,62 @@ void GameManager::destroy()
 
     m_textureManager->destroy();
     delete m_textureManager;
+
+    m_agent->destroy();
+
+    delete m_env;
+    delete m_agent;
+    delete m_fe;
+}
+
+void GameManager::m_initObjects()
+{
+     /* Load textures */
+    m_textureManager = new TextureManager();
+    m_textureManager->loadTexture("assets/walls.jpg", "wall", 64);
+    m_textureManager->loadTexture("assets/ground.jpg", "ground", 64);
+    
+    m_observer = new Observer(90, 30, 450);
+    
+    m_map = new Map(m_mapWidth, m_mapHeight,
+                (*m_textureManager)["wall"],
+                (*m_textureManager)["ground"]);
+
+    m_player = new Player(m_map);
+
+    std::vector<const Phantom*> phantoms;
+    phantoms.push_back(new Phantom(m_map, Color::red));
+    phantoms.push_back(new Phantom(m_map));
+    phantoms.push_back(new Phantom(m_map, Color::pink));
+    phantoms.push_back(new Phantom(m_map, Color::yellowPacman));
+
+    auto lightManager = new Lighting(m_player, phantoms);
+
+    m_gameObjects.push_back(lightManager);
+    m_gameObjects.push_back(m_map);
+    m_gameObjects.push_back(m_player);
+
+    /* Append phantoms */
+    for(int i = 0; i < phantoms.size(); i++)
+        m_gameObjects.push_back((GameObject*)phantoms[i]);
+
+
+    for (int i = 0; i < m_gameObjects.size(); i++)
+        m_gameObjects[i]->init();
+
+    g_gameManager = this;
+
+    /* Initialize variables for reinforcement learning */
+    m_env = new Environment();
+    m_fe = new FeatureExtractor();
+    m_agent = new Agent(0.5, 0.5, 0.8, m_fe);
+    m_agent->init();
+}
+
+void GameManager::m_restart()
+{
+    destroy();
+    m_initObjects();
 }
 
 void GameManager::drawCallBack() { g_gameManager->render(); }
