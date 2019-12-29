@@ -5,7 +5,7 @@ IDIR 	:= include
 
 ODIR	:= build
 
-LIBS	= -lglut -lGLU -lGL -lm -ljpeg
+LIBS	= -g -lglut -lGLU -lGL -lm -ljpeg
 
 _DEPS = game-object.h \
 		cell.h \
@@ -21,7 +21,6 @@ _DEPS = game-object.h \
 		lighting.h \
 		world-types.h \
 		agent.h \
-		environment.h \
 		feature-extractor.h
 
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
@@ -39,7 +38,6 @@ _OBJ = main.o \
 		texture-manager.o \
 		lighting.o \
 		agent.o \
-		environment.o \
 		feature-extractor.o
 		
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))

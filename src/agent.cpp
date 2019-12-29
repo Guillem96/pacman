@@ -2,8 +2,10 @@
 
 #include "util.h"
 
-#include "environment.h"
 #include "feature-extractor.h"
+
+static const std::vector<Actions> getPossibleActions(
+    const state_t& state);
 
 Agent::Agent(float alpha, float epsilon, float gamma, 
              const FeatureExtractor* fe): 
@@ -22,13 +24,10 @@ void Agent::init()
     m_weights = new float[nFeatures];
     for (int i = 0; i < nFeatures; i++)
         m_weights[i] = 0;
-
-    m_env = new Environment();
 }
 
 void Agent::destroy()
 {
-    delete m_env;
     delete[] m_weights;
 }
 
@@ -45,12 +44,15 @@ void Agent::update(const state_t& state,
 
     for (int f = 0; f < features.size(); f++)
         m_weights[f] = m_weights[f] + m_alpha * difference * features[f];
+    
+    m_epsilon -= 1e-5;
+    // std::cout << "Epsilon: " << m_epsilon << std::endl;
 }
 
 Actions Agent::takeAction(const state_t& state) const
 {
     float random = ((float) rand()) / (float) RAND_MAX;
-    auto actions = m_env->getPossibleActions(state);
+    auto actions = getPossibleActions(state);
     if (random < m_epsilon)
         return randomChoice(actions);
     
@@ -71,7 +73,7 @@ Actions Agent::takeAction(const state_t& state) const
 
 float Agent::m_getValue(const state_t& state) const
 {
-    auto actions = m_env->getPossibleActions(state);
+    auto actions = getPossibleActions(state);
     if (actions.empty())
         return 0;
     
@@ -99,4 +101,34 @@ void Agent::stopLearning()
 {
     m_epsilon = 0;
     m_alpha = 0;
+}
+
+
+static const std::vector<Actions> getPossibleActions(
+    const state_t& state)
+{
+    std::vector<Actions> validActions;
+    auto playerPos = state.player.getPosition();
+    auto map = state.map;
+
+    auto upLocation = playerPos + Vector2<>::up;
+    auto downLocation = playerPos + Vector2<>::down;
+    auto rightLocation = playerPos + Vector2<>::right;
+    auto leftLocation = playerPos + Vector2<>::left;
+
+    if (!map(upLocation)->isWall())
+        validActions.push_back(Actions::Up);
+
+    if (!map(downLocation)->isWall())
+        validActions.push_back(Actions::Down);
+
+    if (!map(rightLocation)->isWall())
+        validActions.push_back(Actions::Right);
+
+    if (!map(leftLocation)->isWall())
+        validActions.push_back(Actions::Left);
+    
+    validActions.push_back(Actions::Idle);
+
+    return validActions;
 }

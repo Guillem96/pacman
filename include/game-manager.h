@@ -11,7 +11,6 @@ class Lighting;
 class TextureManager;
 
 class Agent;
-class Environment;
 class FeatureExtractor;
 
 class GameManager
@@ -37,12 +36,16 @@ private:
     Observer* m_observer;
     TextureManager* m_textureManager;
     Lighting* m_lighting;
-    
+    std::vector<const Phantom*> m_phantoms;
+
     // Reinforcement learning variables
-    Environment* m_env;
     FeatureExtractor* m_fe;
     Agent* m_agent;
-    
+
+    int m_episodes = 0;
+    const int MAX_EPISODES = 4;
+    const float LIVING_REWARD = -0.5;
+
     void m_initObjects();
     void m_restart();
 public:

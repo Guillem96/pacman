@@ -3,7 +3,6 @@
 #include <vector>
 #include "world-types.h"
 
-class Environment;
 class FeatureExtractor;
 
 class Agent
@@ -11,7 +10,6 @@ class Agent
 private:
     float *m_weights;
     const FeatureExtractor* m_featureExtractor;
-    const Environment* m_env;
 
     float m_alpha;
     float m_epsilon;

@@ -111,7 +111,6 @@ void Lighting::destroy()
         delete m_phantomDirs[i];
     }
 
-    m_phantoms.clear();
     m_phantomDirs.clear();
     m_phantomLightsPos.clear();
 

@@ -45,8 +45,8 @@ public:
     static const Vector2<> up;
     static const Vector2<> down;
 
-    bool operator==(Vector2<T> other);
-    bool operator!=(Vector2<T> other);
+    bool operator==(const Vector2<T> other) const;
+    bool operator!=(const Vector2<T> other) const;
     bool operator<(const Vector2<T> other) const;
     Vector2<T> operator+(Vector2<T> other) const;
     Vector2<T> operator-(Vector2<T> other) const;
@@ -105,13 +105,13 @@ Vector2<T>::~Vector2()
 }
 
 template <typename T> 
-bool Vector2<T>::operator==(Vector2<T> other)
+bool Vector2<T>::operator==(const Vector2<T> other) const
 {
     return m_x == other.m_x && other.m_y == m_y;
 }
 
 template <typename T> 
-bool Vector2<T>::operator!=(Vector2<T> other)
+bool Vector2<T>::operator!=(const Vector2<T> other) const
 {
     return !((*this) == other);
 }

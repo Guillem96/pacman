@@ -2,9 +2,10 @@
 
 #include <GL/glut.h>
 #include "util.h"
+#include "phantom.h"
 
-Player::Player(const Map *map)
-    : m_map(map)
+Player::Player(const Map *map, std::vector<const Phantom*> phantoms)
+    : m_map(map), m_phantoms(phantoms)
 {
 }
 
@@ -66,8 +67,31 @@ void Player::m_gameRulesLogic(long deltaTime)
     auto cell = (*m_map)(m_pos);
     if (cell->getType() == CellType::Path && cell->hasFood())
     {
-        // TODO: Player score
+        m_score += 1;
         cell->eat();
+
+        int w = m_map->getWidth();
+        int h = m_map->getHeight();
+        for (int i = 0; i < w; i++)
+        {
+            for (int j = 0; j < h; i++)
+            {
+                if ((*m_map)(j, i)->hasFood())
+                    return;
+            }
+        }
+        // No food left
+        m_score += 100;
+    }
+    else
+    {
+        // If phantom chases the pacman, the game ends and we subtract the score
+        for (auto p: m_phantoms)
+        {
+            if (p->getPosition() == m_pos)
+                m_score -= 20;
+                return;
+        }
     }
 }
 
