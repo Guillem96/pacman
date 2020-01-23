@@ -12,5 +12,6 @@ public:
     ~FeatureExtractor() {}
 
     int getNumFeatures() const;
-    std::vector<float> features(const state_t& state, Actions action) const;
+    std::vector<float> features(
+        const state_t& state, Actions action) const;
 };

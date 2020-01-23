@@ -46,7 +46,6 @@ void Agent::update(const state_t& state,
         m_weights[f] = m_weights[f] + m_alpha * difference * features[f];
     
     m_epsilon -= 1e-5;
-    // std::cout << "Epsilon: " << m_epsilon << std::endl;
 }
 
 Actions Agent::takeAction(const state_t& state) const

@@ -101,7 +101,7 @@ void GameManager::update()
     {
         // Take an action based on the current state
         state_t state = buildState(m_player, m_map, m_phantoms);
-        Actions a = m_agent->takeAction(state);
+        auto a = m_agent->takeAction(state);
         m_player->setDirection(getDir(a));
         
         m_observer->update(t - m_lastT);
@@ -174,10 +174,8 @@ void GameManager::destroy()
     m_observer->destroy();
     delete m_observer;
 
-    std::cout << "N gameobjexts: " << m_gameObjects.size() << std::endl;
     for (int i = 0; i < m_gameObjects.size(); i++)
     {
-        std::cout << i << std::endl;
         m_gameObjects[i]->destroy();
         delete m_gameObjects[i];
     }
